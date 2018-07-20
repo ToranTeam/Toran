@@ -1,0 +1,26 @@
+# /etc/conf.d/SLTCd: config file for /etc/init.d/SLTCd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/SLTC/SLTC.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/SLTCd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/SLTCd.pid"
+
+# Where to write SLTCd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/SLTCd"
+
+# User and group to own SLTCd process
+#BITCOIND_USER="SLTC"
+#BITCOIND_GROUP="SLTC"
+
+# Path to SLTCd executable
+#BITCOIND_BIN="/usr/bin/SLTCd"
+
+# Nice value to run SLTCd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""

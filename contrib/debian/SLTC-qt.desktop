@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SLTC
+Comment=SLTC P2P Cryptocurrency
+Comment[fr]=SLTC, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=SLTC, eşten eşe kriptografik sanal para birimi
+Exec=SLTC-qt %u
+Terminal=false
+Type=Application
+Icon=SLTC128
+MimeType=x-scheme-handler/SLTC;
+Categories=Office;Finance;
