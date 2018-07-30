@@ -9,7 +9,7 @@ class ObfuscationConfig;
 }
 class WalletModel;
 
-/** Multifunctional dialog to ask for passSLTCases. Used for encryption, unlocking, and changing the passSLTCase.
+/** Multifunctional dialog to ask for passTNXases. Used for encryption, unlocking, and changing the passTNXase.
  */
 class ObfuscationConfig : public QDialog
 {

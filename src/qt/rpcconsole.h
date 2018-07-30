@@ -54,7 +54,7 @@ private slots:
     /** open the debug.log from the current datadir */
     void on_openDebugLogfileButton_clicked();
     /** change the time range of the network traffic graph */
-    void on_sldGraSLTCange_valueChanged(int value);
+    void on_sldGraTNXange_valueChanged(int value);
     /** update traffic statistics */
     void updateTrafficStats(quint64 totalBytesIn, quint64 totalBytesOut);
     void resizeEvent(QResizeEvent* event);
@@ -103,7 +103,7 @@ public slots:
     void showPeers();
     /** Switch to wallet-repair tab and show */
     void showRepair();
-    /** Open external (default) editor with SLTC.conf */
+    /** Open external (default) editor with TNX.conf */
     void showConfEditor();
     /** Open external (default) editor with masternode.conf */
     void showMNConfEditor();
@@ -130,7 +130,7 @@ signals:
 private:
     static QString FormatBytes(quint64 bytes);
     void startExecutor();
-    void setTrafficGraSLTCange(int mins);
+    void setTrafficGraTNXange(int mins);
     /** Build parameter list for restart */
     void buildParameterlist(QString arg);
     /** show detailed information on ui about selected node */

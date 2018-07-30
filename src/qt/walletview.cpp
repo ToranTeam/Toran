@@ -5,7 +5,7 @@
 #include "walletview.h"
 
 #include "addressbookpage.h"
-#include "askpassSLTCasedialog.h"
+#include "askpassTNXasedialog.h"
 #include "bip38tooldialog.h"
 #include "bitcoingui.h"
 #include "blockexplorer.h"
@@ -211,7 +211,7 @@ void WalletView::setWalletModel(WalletModel* walletModel)
         connect(walletModel->getTransactionTableModel(), SIGNAL(rowsInserted(QModelIndex, int, int)),
             this, SLOT(processNewTransaction(QModelIndex, int, int)));
 
-        // Ask for passSLTCase if needed
+        // Ask for passTNXase if needed
         connect(walletModel, SIGNAL(requireUnlock()), this, SLOT(unlockWallet()));
 
         // Show progress dialog
@@ -349,7 +349,7 @@ void WalletView::encryptWallet(bool status)
 {
     if (!walletModel)
         return;
-    AskPassSLTCaseDialog dlg(status ? AskPassSLTCaseDialog::Encrypt : AskPassSLTCaseDialog::Decrypt, this, walletModel);
+    AskPassTNXaseDialog dlg(status ? AskPassTNXaseDialog::Encrypt : AskPassTNXaseDialog::Decrypt, this, walletModel);
     dlg.exec();
 
     updateEncryptionStatus();
@@ -373,9 +373,9 @@ void WalletView::backupWallet()
     }
 }
 
-void WalletView::changePassSLTCase()
+void WalletView::changePassTNXase()
 {
-    AskPassSLTCaseDialog dlg(AskPassSLTCaseDialog::ChangePass, this, walletModel);
+    AskPassTNXaseDialog dlg(AskPassTNXaseDialog::ChangePass, this, walletModel);
     dlg.exec();
 }
 
@@ -386,7 +386,7 @@ void WalletView::unlockWallet()
     // Unlock wallet when requested by wallet model
 
     if (walletModel->getEncryptionStatus() == WalletModel::Locked || walletModel->getEncryptionStatus() == WalletModel::UnlockedForAnonymizationOnly) {
-        AskPassSLTCaseDialog dlg(AskPassSLTCaseDialog::UnlockAnonymize, this, walletModel);
+        AskPassTNXaseDialog dlg(AskPassTNXaseDialog::UnlockAnonymize, this, walletModel);
         dlg.exec();
     }
 }
@@ -408,7 +408,7 @@ void WalletView::toggleLockWallet()
 
     // Unlock the wallet when requested
     if (encStatus == walletModel->Locked) {
-        AskPassSLTCaseDialog dlg(AskPassSLTCaseDialog::UnlockAnonymize, this, walletModel);
+        AskPassTNXaseDialog dlg(AskPassTNXaseDialog::UnlockAnonymize, this, walletModel);
         dlg.exec();
     }
 

@@ -5,7 +5,7 @@
 #include "multisigdialog.h"
 #include "forms/ui_multisigdialog.h"
 
-#include "askpassSLTCasedialog.h"
+#include "askpassTNXasedialog.h"
 #include "primitives/transaction.h"
 #include "addressbookpage.h"
 #include "utilstrencodings.h"
@@ -417,7 +417,7 @@ bool MultisigDialog::createMultisigTransaction(vector<CTxIn> vUserIn, vector<CTx
         }
 
         if(totalIn < totalOut){
-            throw runtime_error("Not enough SLTC provided as input to complete transaction (including fee).");
+            throw runtime_error("Not enough TNX provided as input to complete transaction (including fee).");
         }
 
         //calculate change amount
@@ -482,7 +482,7 @@ bool MultisigDialog::createMultisigTransaction(vector<CTxIn> vUserIn, vector<CTx
            tx.vout.at(changeIndex).nValue -= fee;
            feeStringRet = strprintf("%d",((double)fee)/COIN).c_str();
         }else{
-            throw runtime_error("Not enough SLTC provided to cover fee");
+            throw runtime_error("Not enough TNX provided to cover fee");
         }
 
         //clear junk from script sigs
@@ -663,7 +663,7 @@ bool MultisigDialog::signMultisigTx(CMutableTransaction& tx, string& errorOut, Q
             if (model->getEncryptionStatus() == model->Locked) {
                 if (!model->requestUnlock(true).isValid()) {
                     // Unlock wallet was cancelled
-                    throw runtime_error("Error: Your wallet is locked. Please enter the wallet passSLTCase first.");
+                    throw runtime_error("Error: Your wallet is locked. Please enter the wallet passTNXase first.");
                 }
             }
         }
@@ -807,7 +807,7 @@ bool MultisigDialog::createRedeemScript(int m, vector<string> vKeys, CScript& re
         for(vector<string>::iterator it = vKeys.begin(); it != vKeys.end(); ++it) {
             string keyString = *it;
 #ifdef ENABLE_WALLET
-            // Case 1: SLTC address and we have full public key:
+            // Case 1: TNX address and we have full public key:
             if (pwalletMain && IsValidDestinationString(keyString)) {
                 CTxDestination address = DecodeDestination(keyString);
                 CKeyID keyID = GetKeyForDestination(*pwalletMain, address);

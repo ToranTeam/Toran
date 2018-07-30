@@ -30,7 +30,7 @@
        <item>
         <widget class="QLabel" name="infoLabel_ENC">
          <property name="text">
-          <string>Enter a SLTC Address that you would like to encrypt using BIP 38. Enter a passSLTCase in the middle box. Press encrypt to compute the encrypted private key.</string>
+          <string>Enter a TNX Address that you would like to encrypt using BIP 38. Enter a passTNXase in the middle box. Press encrypt to compute the encrypted private key.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -61,7 +61,7 @@
          <item>
           <widget class="QValidatedLineEdit" name="addressIn_ENC">
            <property name="toolTip">
-            <string>The SLTC address to sign the message with</string>
+            <string>The TNX address to sign the message with</string>
            </property>
           </widget>
          </item>
@@ -74,7 +74,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
            </property>
            <property name="shortcut">
@@ -91,7 +91,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
            </property>
            <property name="shortcut">
@@ -115,12 +115,12 @@
             </size>
            </property>
            <property name="text">
-            <string>PassSLTCase: </string>
+            <string>PassTNXase: </string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="passSLTCaseIn_ENC">
+          <widget class="QLineEdit" name="passTNXaseIn_ENC">
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
@@ -170,7 +170,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/editcopy</normaloff>:/icons/editcopy</iconset>
            </property>
           </widget>
@@ -182,13 +182,13 @@
          <item>
           <widget class="QPushButton" name="encryptKeyButton_ENC">
            <property name="toolTip">
-            <string>Encrypt the private key for this SLTC address</string>
+            <string>Encrypt the private key for this TNX address</string>
            </property>
            <property name="text">
             <string>Encrypt &amp;Key</string>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/edit</normaloff>:/icons/edit</iconset>
            </property>
            <property name="autoDefault">
@@ -205,7 +205,7 @@
             <string>Clear &amp;All</string>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
            <property name="autoDefault">
@@ -267,7 +267,7 @@
        <item>
         <widget class="QLabel" name="infoLabel_DEC">
          <property name="text">
-          <string>Enter the BIP 38 encrypted private key. Enter the passSLTCase in the middle box. Click Decrypt Key to compute the private key. After the key is decrypted, clicking 'Import Address' will add this private key to the wallet.</string>
+          <string>Enter the BIP 38 encrypted private key. Enter the passTNXase in the middle box. Click Decrypt Key to compute the private key. After the key is decrypted, clicking 'Import Address' will add this private key to the wallet.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -311,7 +311,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
            </property>
            <property name="shortcut">
@@ -335,12 +335,12 @@
             </size>
            </property>
            <property name="text">
-            <string>PassSLTCase: </string>
+            <string>PassTNXase: </string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="passSLTCaseIn_DEC">
+          <widget class="QLineEdit" name="passTNXaseIn_DEC">
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
@@ -353,13 +353,13 @@
          <item>
           <widget class="QPushButton" name="decryptKeyButton_DEC">
            <property name="toolTip">
-            <string>Decrypt the entered key using the passSLTCase</string>
+            <string>Decrypt the entered key using the passTNXase</string>
            </property>
            <property name="text">
             <string>Decrypt &amp;Key</string>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/transaction_0</normaloff>:/icons/transaction_0</iconset>
            </property>
            <property name="autoDefault">
@@ -376,7 +376,7 @@
             <string>Clear &amp;All</string>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
            <property name="autoDefault">
@@ -477,7 +477,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../SLTC.qrc"/>
+  <include location="../TNX.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SLTC_MINTPOOL_H
-#define SLTC_MINTPOOL_H
+#ifndef TNX_MINTPOOL_H
+#define TNX_MINTPOOL_H
 
 #include <map>
 #include <list>
@@ -50,5 +50,5 @@ public:
 };
 
 
-#endif //SLTC_MINTPOOL_H
+#endif //TNX_MINTPOOL_H
 

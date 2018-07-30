@@ -70,8 +70,8 @@ void Mutex::AssertHeld() {
 CondVar::CondVar(Mutex* mu) :
     waiting_(0), 
     mu_(mu), 
-    sem1_(::CreateSemaSLTC(NULL, 0, 10000, NULL)), 
-    sem2_(::CreateSemaSLTC(NULL, 0, 10000, NULL)) {
+    sem1_(::CreateSemaTNX(NULL, 0, 10000, NULL)), 
+    sem2_(::CreateSemaTNX(NULL, 0, 10000, NULL)) {
   assert(mu_);
 }
 
@@ -91,7 +91,7 @@ void CondVar::Wait() {
 
   // initiate handshake
   ::WaitForSingleObject(sem1_, INFINITE);
-  ::ReleaseSemaSLTC(sem2_, 1, NULL);
+  ::ReleaseSemaTNX(sem2_, 1, NULL);
   mu_->Lock();
 }
 
@@ -101,7 +101,7 @@ void CondVar::Signal() {
     --waiting_;
 
     // finalize handshake
-    ::ReleaseSemaSLTC(sem1_, 1, NULL);
+    ::ReleaseSemaTNX(sem1_, 1, NULL);
     ::WaitForSingleObject(sem2_, INFINITE);
   }
   wait_mtx_.Unlock();
@@ -109,7 +109,7 @@ void CondVar::Signal() {
 
 void CondVar::SignalAll() {
   wait_mtx_.Lock();
-  ::ReleaseSemaSLTC(sem1_, waiting_, NULL);
+  ::ReleaseSemaTNX(sem1_, waiting_, NULL);
   while(waiting_ > 0) {
     --waiting_;
     ::WaitForSingleObject(sem2_, INFINITE);

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SLTC_ZEROCOIN_H
-#define SLTC_ZEROCOIN_H
+#ifndef TNX_ZEROCOIN_H
+#define TNX_ZEROCOIN_H
 
 #include "amount.h"
 #include "limits.h"
@@ -247,4 +247,4 @@ public:
     int GetNeededSpends();
 };
 
-#endif //SLTC_ZEROCOIN_H
+#endif //TNX_ZEROCOIN_H

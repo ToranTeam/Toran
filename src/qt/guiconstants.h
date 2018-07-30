@@ -10,10 +10,10 @@
 /* Milliseconds between model updates */
 static const int MODEL_UPDATE_DELAY = 1000;
 
-/* AskPassSLTCaseDialog -- Maximum passSLTCase length */
-static const int MAX_PASSSLTCASE_SIZE = 1024;
+/* AskPassTNXaseDialog -- Maximum passTNXase length */
+static const int MAX_PASSTNXASE_SIZE = 1024;
 
-/* SLTC GUI -- Size of icons in status bar */
+/* TNX GUI -- Size of icons in status bar */
 static const int STATUSBAR_ICONSIZE = 16;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
@@ -50,9 +50,9 @@ static const int MAX_URI_LENGTH = 255;
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 35
 
-#define QAPP_ORG_NAME "SLTC"
-#define QAPP_ORG_DOMAIN "SLTC.org"
-#define QAPP_APP_NAME_DEFAULT "SLTC-Qt"
-#define QAPP_APP_NAME_TESTNET "SLTC-Qt-testnet"
+#define QAPP_ORG_NAME "TNX"
+#define QAPP_ORG_DOMAIN "TNX.org"
+#define QAPP_APP_NAME_DEFAULT "TNX-Qt"
+#define QAPP_APP_NAME_TESTNET "TNX-Qt-testnet"
 
 #endif // BITCOIN_QT_GUICONSTANTS_H

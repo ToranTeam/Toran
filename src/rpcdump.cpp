@@ -82,10 +82,10 @@ UniValue importprivkey(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 3)
         throw runtime_error(
-            "importprivkey \"SLTCprivkey\" ( \"label\" rescan )\n"
+            "importprivkey \"TNXprivkey\" ( \"label\" rescan )\n"
             "\nAdds a private key (as returned by dumpprivkey) to your wallet.\n"
             "\nArguments:\n"
-            "1. \"SLTCprivkey\"   (string, required) The private key (see dumpprivkey)\n"
+            "1. \"TNXprivkey\"   (string, required) The private key (see dumpprivkey)\n"
             "2. \"label\"            (string, optional, default=\"\") An optional label\n"
             "3. rescan               (boolean, optional, default=true) Rescan the wallet for transactions\n"
             "\nNote: This call can take minutes to complete if rescan is true.\n"
@@ -230,7 +230,7 @@ UniValue importaddress(const UniValue& params, bool fHelp)
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Cannot use the p2sh flag with an address - use a script instead");
         ImportAddress(DecodeDestination(params[0].get_str()), strLabel);
     } else {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SLTC address or script");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid TNX address or script");
     }
 
     if (fRescan)
@@ -395,11 +395,11 @@ UniValue dumpprivkey(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 1)
         throw runtime_error(
-            "dumpprivkey \"SLTCaddress\"\n"
-            "\nReveals the private key corresponding to 'SLTCaddress'.\n"
+            "dumpprivkey \"TNXaddress\"\n"
+            "\nReveals the private key corresponding to 'TNXaddress'.\n"
             "Then the importprivkey can be used with this output\n"
             "\nArguments:\n"
-            "1. \"SLTCaddress\"   (string, required) The SLTC address for the private key\n"
+            "1. \"TNXaddress\"   (string, required) The TNX address for the private key\n"
             "\nResult:\n"
             "\"key\"                (string) The private key\n"
             "\nExamples:\n"
@@ -414,7 +414,7 @@ UniValue dumpprivkey(const UniValue& params, bool fHelp)
 
     string strAddress = params[0].get_str();
     if (!IsValidDestinationString(strAddress))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SLTC address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid TNX address");
     const CTxDestination dest = DecodeDestination(strAddress);
     auto keyid = GetKeyForDestination(*pwalletMain, dest);
     if (keyid.IsNull()) {
@@ -434,9 +434,9 @@ UniValue dumpwallet(const UniValue& params, bool fHelp)
             "dumpwallet \"filename\"\n"
             "\nThis command has been deprecated and replace with dumpallprivatekeys.\n"
             "\nSCAM WARNING: If anyone asks you to run this command and send them the file,\n"
-            "they will have FULL ACCESS to STEAL your SLTC. Giving this file to someone\n"
-            "is the same thing as giving them all of the SLTC in your wallet! Never send\n"
-            "this file to ANYONE that you do not trust with all of your SLTC!!!\n"
+            "they will have FULL ACCESS to STEAL your TNX. Giving this file to someone\n"
+            "is the same thing as giving them all of the TNX in your wallet! Never send\n"
+            "this file to ANYONE that you do not trust with all of your TNX!!!\n"
             "\nArguments:\n"
             "1. \"filename\"    (string, required) The filename\n"
             "\nExamples:\n" +
@@ -465,7 +465,7 @@ UniValue dumpwallet(const UniValue& params, bool fHelp)
     std::sort(vKeyBirth.begin(), vKeyBirth.end());
 
     // produce output
-    file << strprintf("# Wallet dump created by SLTC %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
+    file << strprintf("# Wallet dump created by TNX %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
     file << strprintf("# * Best block at time of backup was %i (%s),\n", chainActive.Height(), chainActive.Tip()->GetBlockHash().ToString());
     file << strprintf("#   mined on %s\n", EncodeDumpTime(chainActive.Tip()->GetBlockTime()));
@@ -498,9 +498,9 @@ UniValue dumpallprivatekeys(const UniValue& params, bool fHelp)
             "dumpallprivatekeys \"filename\"\n"
             "\nDumps all wallet private keys in an unencrypted, human-readable format.\n"
             "\nSCAM WARNING: If anyone asks you to run this command and send them the file,\n"
-            "they will have FULL ACCESS to STEAL your SLTC. Giving this file to someone\n"
-            "is the same thing as giving them all of the SLTC in your wallet! Never send\n"
-            "this file to ANYONE that you do not trust with all of your SLTC!!!\n"
+            "they will have FULL ACCESS to STEAL your TNX. Giving this file to someone\n"
+            "is the same thing as giving them all of the TNX in your wallet! Never send\n"
+            "this file to ANYONE that you do not trust with all of your TNX!!!\n"
            "\nArguments:\n"
             "1. \"filename\"    (string, required) The filename\n"
             "\nExamples:\n" +
@@ -529,7 +529,7 @@ UniValue dumpallprivatekeys(const UniValue& params, bool fHelp)
     std::sort(vKeyBirth.begin(), vKeyBirth.end());
 
     // produce output
-    file << strprintf("# Wallet private key dump file created by SLTC %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
+    file << strprintf("# Wallet private key dump file created by TNX %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
     file << strprintf("# * Best block at time of backup was %i (%s),\n", chainActive.Height(), chainActive.Tip()->GetBlockHash().ToString());
     file << strprintf("#   mined on %s\n", EncodeDumpTime(chainActive.Tip()->GetBlockTime()));
@@ -559,11 +559,11 @@ UniValue bip38encrypt(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 2)
         throw runtime_error(
-            "bip38encrypt \"SLTCaddress\"\n"
-            "\nEncrypts a private key corresponding to 'SLTCaddress'.\n"
+            "bip38encrypt \"TNXaddress\"\n"
+            "\nEncrypts a private key corresponding to 'TNXaddress'.\n"
             "\nArguments:\n"
-            "1. \"SLTCaddress\"   (string, required) The SLTC address for the private key (you must hold the key already)\n"
-            "2. \"passSLTCase\"   (string, required) The passSLTCase you want the private key to be encrypted with - Valid special chars: !#$%&'()*+,-./:;<=>?`{|}~ \n"
+            "1. \"TNXaddress\"   (string, required) The TNX address for the private key (you must hold the key already)\n"
+            "2. \"passTNXase\"   (string, required) The passTNXase you want the private key to be encrypted with - Valid special chars: !#$%&'()*+,-./:;<=>?`{|}~ \n"
             "\nResult:\n"
             "\"key\"                (string) The encrypted private key\n"
             "\nExamples:\n");
@@ -573,10 +573,10 @@ UniValue bip38encrypt(const UniValue& params, bool fHelp)
     EnsureWalletIsUnlocked();
 
     string strAddress = params[0].get_str();
-    string strPassSLTCase = params[1].get_str();
+    string strPassTNXase = params[1].get_str();
 
     if (!IsValidDestinationString(strAddress))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SLTC address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid TNX address");
     CTxDestination address = DecodeDestination(strAddress);
     CKeyID *keyID = boost::get<CKeyID>(&address);
     if (!keyID)
@@ -586,7 +586,7 @@ UniValue bip38encrypt(const UniValue& params, bool fHelp)
         throw JSONRPCError(RPC_WALLET_ERROR, "Private key for address " + strAddress + " is not known");
 
     uint256 privKey = vchSecret.GetPrivKey_256();
-    string encryptedOut = BIP38_Encrypt(strAddress, strPassSLTCase, privKey, vchSecret.IsCompressed());
+    string encryptedOut = BIP38_Encrypt(strAddress, strPassTNXase, privKey, vchSecret.IsCompressed());
 
     UniValue result(UniValue::VOBJ);
     result.push_back(Pair("Addess", strAddress));
@@ -599,11 +599,11 @@ UniValue bip38decrypt(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 2)
         throw runtime_error(
-            "bip38decrypt \"SLTCaddress\"\n"
+            "bip38decrypt \"TNXaddress\"\n"
             "\nDecrypts and then imports password protected private key.\n"
             "\nArguments:\n"
             "1. \"encryptedkey\"   (string, required) The encrypted private key\n"
-            "2. \"passSLTCase\"   (string, required) The passSLTCase you want the private key to be encrypted with\n"
+            "2. \"passTNXase\"   (string, required) The passTNXase you want the private key to be encrypted with\n"
 
             "\nResult:\n"
             "\"key\"                (string) The decrypted private key\n"
@@ -613,13 +613,13 @@ UniValue bip38decrypt(const UniValue& params, bool fHelp)
 
     EnsureWalletIsUnlocked();
 
-    /** Collect private key and passSLTCase **/
+    /** Collect private key and passTNXase **/
     string strKey = params[0].get_str();
-    string strPassSLTCase = params[1].get_str();
+    string strPassTNXase = params[1].get_str();
 
     uint256 privKey;
     bool fCompressed;
-    if (!BIP38_Decrypt(strPassSLTCase, strKey, privKey, fCompressed))
+    if (!BIP38_Decrypt(strPassTNXase, strKey, privKey, fCompressed))
         throw JSONRPCError(RPC_WALLET_ERROR, "Failed To Decrypt");
 
     UniValue result(UniValue::VOBJ);

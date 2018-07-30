@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2016 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
-// Copyright (c) 2017-2018 The SLTC developers
+// Copyright (c) 2017-2018 The TNX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -54,7 +54,7 @@ using namespace std;
 using namespace libzerocoin;
 
 #if defined(NDEBUG)
-#error "SLTC cannot be compiled without assertions."
+#error "TNX cannot be compiled without assertions."
 #endif
 
 // 6 comes from OPCODE (1) + vch.size() (1) + BIGNUM size (4)
@@ -91,7 +91,7 @@ bool fAlerts = DEFAULT_ALERTS;
 unsigned int nStakeMinAge = 1 * 60 * 60;
 int64_t nReserveBalance = 0;
 
-/** Fees smaller than this (in uSLTC) are considered zero fee (for relaying and mining)
+/** Fees smaller than this (in uTNX) are considered zero fee (for relaying and mining)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minRelayTxFee only 10 times higher
  * so it's still 10 times lower comparing to bitcoin.
  */
@@ -1246,16 +1246,16 @@ bool ContextualCheckZerocoinMint(const CTransaction& tx, const PublicCoin& coin,
 }
 
 bool ContextualCheckZerocoinSpend(const CTransaction& tx, const CoinSpend& spend, CBlockIndex* pindex, const uint256& hashBlock) {
-    //Check to see if the zSLTC is properly signed
+    //Check to see if the zTNX is properly signed
     if (pindex->nHeight > Params().Zerocoin_LastOldParams()) {
         if (!spend.HasValidSignature())
-            return error("%s: V2 zSLTC spend does not have a valid signature", __func__);
+            return error("%s: V2 zTNX spend does not have a valid signature", __func__);
 
         libzerocoin::SpendType expectedType = libzerocoin::SpendType::SPEND;
         if (tx.IsCoinStake())
             expectedType = libzerocoin::SpendType::STAKE;
         if (spend.getSpendType() != expectedType) {
-            return error("%s: trying to spend zSLTC without the correct spend type. txid=%s", __func__,
+            return error("%s: trying to spend zTNX without the correct spend type. txid=%s", __func__,
                          tx.GetHash().GetHex());
         }
     }
@@ -1263,13 +1263,13 @@ bool ContextualCheckZerocoinSpend(const CTransaction& tx, const CoinSpend& spend
     //Reject serial's that are already in the blockchain
     int nHeightTx = 0;
     if (IsSerialInBlockchain(spend.getCoinSerialNumber(), nHeightTx))
-        return error("%s : zSLTC spend with serial %s is already in block %d\n", __func__,
+        return error("%s : zTNX spend with serial %s is already in block %d\n", __func__,
                      spend.getCoinSerialNumber().GetHex(), nHeightTx);
 
     //Reject serial's that are not in the acceptable value range
     libzerocoin::ZerocoinParams* paramsToUse = spend.getVersion() < libzerocoin::PrivateCoin::PUBKEY_VERSION ? Params().OldZerocoin_Params() : Params().Zerocoin_Params();
     if (!spend.HasValidSerial(paramsToUse))
-        return error("%s : zSLTC spend with serial %s from tx %s is not in valid range\n", __func__,
+        return error("%s : zTNX spend with serial %s from tx %s is not in valid range\n", __func__,
                      spend.getCoinSerialNumber().GetHex(), tx.GetHash().GetHex());
 
     return true;
@@ -1575,7 +1575,7 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
             //Check that txid is not already in the chain
             int nHeightTx = 0;
             if (IsTransactionInChain(tx.GetHash(), nHeightTx))
-                return state.Invalid(error("AcceptToMemoryPool : zSLTC spend tx %s already in block %d",
+                return state.Invalid(error("AcceptToMemoryPool : zTNX spend tx %s already in block %d",
                                            tx.GetHash().GetHex(), nHeightTx), REJECT_DUPLICATE, "bad-txns-inputs-spent");
 
             //Check for double spending of serial #'s
@@ -1585,7 +1585,7 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
                 CoinSpend spend = TxInToZerocoinSpend(txIn);
                 if (!ContextualCheckZerocoinSpend(tx, spend, chainActive.Tip(), 0))
                     return state.Invalid(error("%s: ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                               tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zSLTC");
+                                               tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zTNX");
             }
         } else {
             LOCK(pool.cs);
@@ -1607,7 +1607,7 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
                 }
             }
 
-            // Check that zSLTC mints are not already known
+            // Check that zTNX mints are not already known
             if (tx.IsZerocoinMint()) {
                 for (auto& out : tx.vout) {
                     if (!out.IsZerocoinMint())
@@ -1874,7 +1874,7 @@ bool AcceptableInputs(CTxMemPool& pool, CValidationState& state, const CTransact
                 }
             }
 
-            // Check that zSLTC mints are not already known
+            // Check that zTNX mints are not already known
             if (tx.IsZerocoinMint()) {
                 for (auto& out : tx.vout) {
                     if (!out.IsZerocoinMint())
@@ -2156,62 +2156,61 @@ int64_t GetBlockValue(int nHeight)
     int64_t nSubsidy = 0;
 
     if (Params().NetworkID() == CBaseChainParams::TESTNET) {
-        if (nHeight < 200 && nHeight > 0)
-            return 250000 * COIN;
+        if (nHeight < 50 && nHeight > 0)
+            return 1000000 * COIN;
     }
 
-    if (nHeight == 0) {
-        nSubsidy = 1 * COIN;
-    } else if(nHeight == 1) { 
-        nSubsidy = 2500000 * COIN;
-    } else if (nHeight <= 100) {
-        nSubsidy = 1 * COIN;
-    } else if (nHeight <= 500) {
-	nSubsidy = 3 * COIN;
-    } else if (nHeight <= 800) {
-	nSubsidy = 5 * COIN;
-    } else if (nHeight <= 2000) {
-	nSubsidy = 7 * COIN;
-    } else if (nHeight <= 27000) { 
-        nSubsidy = 20 * COIN;
-    } else if (nHeight <= 190000) {
-        nSubsidy = 24 * COIN;
-    } else if (nHeight <= 380000) {
-	nSubsidy = 20 * COIN;
-    } else if (nHeight <= 570000) {
-        nSubsidy = 30 * COIN;
-    } else if (nHeight <= 760000) {
-        nSubsidy = 24 * COIN;
-    } else if (nHeight <= 950000) {
-        nSubsidy = 24 * COIN;
-    } else if (nHeight <= 1140000) {
-        nSubsidy = 20 * COIN;
-    } else if (nHeight <= 1330000) {
-        nSubsidy = 16 * COIN;
-    } else if (nHeight <= 1520000) {
-        nSubsidy = 12 * COIN;
-    } else if (nHeight <= 1710000) {
-        nSubsidy = 8 * COIN;
-    } else if (nHeight <= 1900000) {
-        nSubsidy = 16 * COIN;
-    } else if (nHeight >= 2090000) {
-        nSubsidy = 8 * COIN;
-    } else if (nHeight >= 2280000) {
-        nSubsidy = 4 * COIN;
-    } else if (nHeight >= 2470000) {
-        nSubsidy = 2 * COIN;
-    } else if (nHeight >= 2660000) {
-	nSubsidy = 1 * COIN;
-    } else if (nHeight >= 2850000) {
-	nSubsidy = 0 * COIN;
-    } else {
-        nSubsidy = 0 * COIN;
+    
+    if (nHeight == 1) {
+        nSubsidy = 500000 * COIN; // Premine
     }
-    return nSubsidy;
+    else if (nHeight > 1 && nHeight <= 200) { // Premine
+        nSubsidy =  250* COIN; 
+    }
+    else if (nHeight > 200 && nHeight <= 400) {   // Instamine
+        nSubsidy = 1 * COIN;
+    }
+    else if (nHeight > 400 && nHeight <= 1499) { // Instamine
+        nSubsidy = 1 * COIN; 
+    }
+    else if (nHeight > 1499 && nHeight <= 210000) { // Full Rewards 
+        nSubsidy = 18 * COIN; 
+    }
+    else if (nHeight > 210000 && nHeight <= 420000) {
+        nSubsidy = 24 * COIN; 
+    }
+    else if (nHeight > 420000 && nHeight <= 630000) {
+        nSubsidy = 21 * COIN;
+    }
+    else if (nHeight > 630000 && nHeight <= 840000) {
+        nSubsidy = 18 * COIN; 
+    }
+    else if (nHeight > 840000 && nHeight <= 1050000) {
+        nSubsidy = 15 * COIN; 
+    }
+    else if (nHeight > 1050000 && nHeight <= 1260000) {
+        nSubsidy = 5 * COIN; 
+    }
+    else {
+    nSubsidy = 0 * COIN; 
+    }
+    
+    
+	return nSubsidy;
 }
 int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCount)
 {
-    int64_t ret = blockValue / 2 * 1;
+    int64_t ret = 0;
+
+    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+        if (nHeight < 200)
+            return 0;
+    }
+
+    if (nHeight > 1) {
+        ret = blockValue * .65;
+    }
+
     return ret;
 }
 
@@ -2509,7 +2508,7 @@ bool DisconnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex
         const CTransaction& tx = block.vtx[i];
 
         /** UNDO ZEROCOIN DATABASING
-         * note we only undo zerocoin databasing in the following statement, value to and from SLTC
+         * note we only undo zerocoin databasing in the following statement, value to and from TNX
          * addresses should still be handled by the typical bitcoin based undo code
          * */
         if (tx.ContainsZerocoins()) {
@@ -2643,11 +2642,11 @@ static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck()
 {
-    RenameThread("SLTC-scriptch");
+    RenameThread("TNX-scriptch");
     scriptcheckqueue.Thread();
 }
 
-void RecalculateZSLTCMinted()
+void RecalculateZTNXMinted()
 {
     CBlockIndex *pindex = chainActive[Params().Zerocoin_StartHeight()];
     int nHeightEnd = chainActive.Height();
@@ -2674,14 +2673,14 @@ void RecalculateZSLTCMinted()
     }
 }
 
-void RecalculateZSLTCSpent()
+void RecalculateZTNXSpent()
 {
     CBlockIndex* pindex = chainActive[Params().Zerocoin_StartHeight()];
     while (true) {
         if (pindex->nHeight % 1000 == 0)
             LogPrintf("%s : block %d...\n", __func__, pindex->nHeight);
 
-        //Rewrite zSLTC supply
+        //Rewrite zTNX supply
         CBlock block;
         assert(ReadBlockFromDisk(block, pindex));
 
@@ -2690,13 +2689,13 @@ void RecalculateZSLTCSpent()
         //Reset the supply to previous block
         pindex->mapZerocoinSupply = pindex->pprev->mapZerocoinSupply;
 
-        //Add mints to zSLTC supply
+        //Add mints to zTNX supply
         for (auto denom : libzerocoin::zerocoinDenomList) {
             long nDenomAdded = count(pindex->vMintDenominationsInBlock.begin(), pindex->vMintDenominationsInBlock.end(), denom);
             pindex->mapZerocoinSupply.at(denom) += nDenomAdded;
         }
 
-        //Remove spends from zSLTC supply
+        //Remove spends from zTNX supply
         for (auto denom : listDenomsSpent)
             pindex->mapZerocoinSupply.at(denom)--;
 
@@ -2710,7 +2709,7 @@ void RecalculateZSLTCSpent()
     }
 }
 
-bool RecalculateSLTCSupply(int nHeightStart)
+bool RecalculateTNXSupply(int nHeightStart)
 {
     if (nHeightStart > chainActive.Height())
         return false;
@@ -2770,7 +2769,7 @@ bool RecalculateSLTCSupply(int nHeightStart)
 
 bool ReindexAccumulators(list<uint256>& listMissingCheckpoints, string& strError)
 {
-    // SLTC: recalculate Accumulator Checkpoints that failed to database properly
+    // TNX: recalculate Accumulator Checkpoints that failed to database properly
     if (!listMissingCheckpoints.empty() && chainActive.Height() >= Params().Zerocoin_StartHeight()) {
         //uiInterface.InitMessage(_("Calculating missing accumulators..."));
         LogPrintf("%s : finding missing checkpoints\n", __func__);
@@ -2817,7 +2816,7 @@ bool ReindexAccumulators(list<uint256>& listMissingCheckpoints, string& strError
     return true;
 }
 
-bool UpdateZSLTCSupply(const CBlock& block, CBlockIndex* pindex)
+bool UpdateZTNXSupply(const CBlock& block, CBlockIndex* pindex)
 {
     std::list<CZerocoinMint> listMints;
     BlockToZerocoinMintList(block, listMints);
@@ -3030,7 +3029,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     return state.DoS(100, error("%s: failed to add block %s with invalid zerocoinspend", __func__, tx.GetHash().GetHex()), REJECT_INVALID);
                 }
 
-            // Check that zSLTC mints are not already known
+            // Check that zTNX mints are not already known
             if (tx.IsZerocoinMint()) {
                 for (auto& out : tx.vout) {
                     if (!out.IsZerocoinMint())
@@ -3051,7 +3050,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 return state.DoS(100, error("ConnectBlock() : inputs missing/spent"),
                     REJECT_INVALID, "bad-txns-inputs-missingorspent");
             
-            // Check that zSLTC mints are not already known
+            // Check that zTNX mints are not already known
             if (tx.IsZerocoinMint()) {
                 for (auto& out : tx.vout) {
                     if (!out.IsZerocoinMint())
@@ -3113,14 +3112,14 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
     }
 
-    UpdateZSLTCSupply(block, pindex);
+    UpdateZTNXSupply(block, pindex);
 
     // track money supply and mint amount info
     CAmount nMoneySupplyPrev = pindex->pprev ? pindex->pprev->nMoneySupply : 0;
     pindex->nMoneySupply = nMoneySupplyPrev + nValueOut - nValueIn;
     pindex->nMint = pindex->nMoneySupply - nMoneySupplyPrev + nFees;
 
-//    LogPrintf("XX69----------> ConnectBlock(): nValueOut: %s, nValueIn: %s, nFees: %s, nMint: %s zSLTCSpent: %s\n",
+//    LogPrintf("XX69----------> ConnectBlock(): nValueOut: %s, nValueIn: %s, nFees: %s, nMint: %s zTNXSpent: %s\n",
 //              FormatMoney(nValueOut), FormatMoney(nValueIn),
 //              FormatMoney(nFees), FormatMoney(pindex->nMint), FormatMoney(nAmountZerocoinSpent));
 
@@ -3173,7 +3172,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         setDirtyBlockIndex.insert(pindex);
     }
 
-    //Record zSLTC serials
+    //Record zTNX serials
     set<uint256> setAddedTx;
     for (pair<CoinSpend, uint256> pSpend : vSpends) {
         //record spend to database
@@ -3313,7 +3312,7 @@ void static UpdateTip(CBlockIndex* pindexNew)
 {
     chainActive.SetTip(pindexNew);
 
-    // If turned on AutoZeromint will automatically convert SLTC to zSLTC
+    // If turned on AutoZeromint will automatically convert TNX to zTNX
     if (pwalletMain->isZeromintEnabled ())
         pwalletMain->AutoZeromint ();
 
@@ -4149,7 +4148,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 nHeight = (*mi).second->nHeight + 1;
         }
 
-        // SLTC
+        // TNX
         // It is entierly possible that we don't have enough data and this could fail
         // (i.e. the block could indeed be valid). Store the block for later consideration
         // but issue an initial reject message.
@@ -4361,13 +4360,13 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
             if (!CheckTransaction(tx, true, chainActive.Height() + 1 >= Params().Zerocoin_StartHeight(), state, GetSporkValue(SPORK_17_SEGWIT_ACTIVATION) < block.nTime))
                 return error("CheckBlock() : CheckTransaction failed");
 
-            // double check that there are no double spent zSLTC spends in this block
+            // double check that there are no double spent zTNX spends in this block
             if (tx.IsZerocoinSpend()) {
                 for (const CTxIn txIn : tx.vin) {
                     if (txIn.scriptSig.IsZerocoinSpend()) {
                         libzerocoin::CoinSpend spend = TxInToZerocoinSpend(txIn);
                         if (count(vBlockSerials.begin(), vBlockSerials.end(), spend.getCoinSerialNumber()))
-                            return state.DoS(100, error("%s : Double spending of zSLTC serial %s in block\n Block: %s",
+                            return state.DoS(100, error("%s : Double spending of zTNX serial %s in block\n Block: %s",
                                                         __func__, spend.getCoinSerialNumber().GetHex(), block.ToString()));
                         vBlockSerials.emplace_back(spend.getCoinSerialNumber());
                     }
@@ -4661,7 +4660,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, CBlock* pblock, CDis
         }
     }
     if (nMints || nSpends)
-        LogPrintf("%s : block contains %d zSLTC mints and %d zSLTC spends\n", __func__, nMints, nSpends);
+        LogPrintf("%s : block contains %d zTNX mints and %d zTNX spends\n", __func__, nMints, nSpends);
 
     // ppcoin: check proof-of-stake
     // Limited duplicity on stake: prevents block flood attack
@@ -5806,7 +5805,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             pfrom->cleanSubVer = SanitizeString(pfrom->strSubVer);
         }
         // broken release with wrong protocol version
-        if (pfrom->cleanSubVer == "/SLTC Core:1.1.0/") {
+        if (pfrom->cleanSubVer == "/TNX Core:1.1.0/") {
             LOCK(cs_main);
             Misbehaving(pfrom->GetId(), 100); // instantly ban them because they have old block data
             return false;
@@ -5849,7 +5848,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         pfrom->PushMessage(NetMsgType::VERACK);
         pfrom->ssSend.SetVersion(min(pfrom->nVersion, PROTOCOL_VERSION));
 
-        // SLTC: We use certain sporks during IBD, so check to see if they are
+        // TNX: We use certain sporks during IBD, so check to see if they are
         // available. If not, ask the first peer connected for them.
         bool fMissingSporks = !pSporkDB->SporkExists(SPORK_16_ZEROCOIN_MAINTENANCE_MODE);
 

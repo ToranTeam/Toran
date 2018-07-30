@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2013 The Bitcoin developers
 // Copyright (c) 2016-2017 The PIVX developers
-// Copyright (c) 2017 The SLTC developers
+// Copyright (c) 2017 The TNX developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,7 +16,7 @@
 #include "primitives/zerocoin.h"
 #include "libzerocoin/Accumulator.h"
 #include "libzerocoin/Denominations.h"
-#include "zSLTCtracker.h"
+#include "zTNXtracker.h"
 
 #include <list>
 #include <stdint.h>
@@ -177,14 +177,14 @@ public:
     bool ReadZerocoinSpendSerialEntry(const CBigNum& bnSerial);
     bool WriteCurrentSeedHash(const uint256& hashSeed);
     bool ReadCurrentSeedHash(uint256& hashSeed);
-    bool WriteZSLTCSeed(const uint256& hashSeed, const vector<unsigned char>& seed);
-    bool ReadZSLTCSeed(const uint256& hashSeed, vector<unsigned char>& seed);
-    bool ReadZSLTCSeed_deprecated(uint256& seed);
-    bool EraseZSLTCSeed();
-    bool EraseZSLTCSeed_deprecated();
+    bool WriteZTNXSeed(const uint256& hashSeed, const vector<unsigned char>& seed);
+    bool ReadZTNXSeed(const uint256& hashSeed, vector<unsigned char>& seed);
+    bool ReadZTNXSeed_deprecated(uint256& seed);
+    bool EraseZTNXSeed();
+    bool EraseZTNXSeed_deprecated();
 
-    bool WriteZSLTCCount(const uint32_t& nCount);
-    bool ReadZSLTCCount(uint32_t& nCount);
+    bool WriteZTNXCount(const uint32_t& nCount);
+    bool ReadZTNXCount(uint32_t& nCount);
     std::map<uint256, std::vector<pair<uint256, uint32_t> > > MapMintPool();
     bool WriteMintPoolPair(const uint256& hashMasterSeed, const uint256& hashPubcoin, const uint32_t& nCount);
 

@@ -11,9 +11,9 @@ rpcpass = ""
 
 
 if rpcpass == "":
-    access = ServiceProxy("http://127.0.0.1:20102")
+    access = ServiceProxy("http://127.0.0.1:16209")
 else:
-    access = ServiceProxy("http://"+rpcuser+":"+rpcpass+"@127.0.0.1:20102")
+    access = ServiceProxy("http://"+rpcuser+":"+rpcpass+"@127.0.0.1:16209")
 cmd = sys.argv[1].lower()
 
 if cmd == "backupwallet":
@@ -25,13 +25,13 @@ if cmd == "backupwallet":
         
 elif cmd == "encryptwallet":
     try:
-        pwd = getpass.getpass(prompt="Enter passSLTCase: ")
-        pwd2 = getpass.getpass(prompt="Repeat passSLTCase: ")
+        pwd = getpass.getpass(prompt="Enter passTNXase: ")
+        pwd2 = getpass.getpass(prompt="Repeat passTNXase: ")
         if pwd == pwd2:
             access.encryptwallet(pwd)
             print "\n---Wallet encrypted. Server stopping, restart to run with encrypted wallet---\n"
         else:
-            print "\n---PassSLTCases do not match---\n"
+            print "\n---PassTNXases do not match---\n"
     except:
         print "\n---An error occurred---\n"
 
@@ -313,21 +313,21 @@ elif cmd == "validateaddress":
     except:
         print "\n---An error occurred---\n"
 
-elif cmd == "walletpassSLTCase":
+elif cmd == "walletpassTNXase":
     try:
-        pwd = getpass.getpass(prompt="Enter wallet passSLTCase: ")
-        access.walletpassSLTCase(pwd, 60)
+        pwd = getpass.getpass(prompt="Enter wallet passTNXase: ")
+        access.walletpassTNXase(pwd, 60)
         print "\n---Wallet unlocked---\n"
     except:
         print "\n---An error occurred---\n"
 
-elif cmd == "walletpassSLTCasechange":
+elif cmd == "walletpassTNXasechange":
     try:
-        pwd = getpass.getpass(prompt="Enter old wallet passSLTCase: ")
-        pwd2 = getpass.getpass(prompt="Enter new wallet passSLTCase: ")
-        access.walletpassSLTCasechange(pwd, pwd2)
+        pwd = getpass.getpass(prompt="Enter old wallet passTNXase: ")
+        pwd2 = getpass.getpass(prompt="Enter new wallet passTNXase: ")
+        access.walletpassTNXasechange(pwd, pwd2)
         print
-        print "\n---PassSLTCase changed---\n"
+        print "\n---PassTNXase changed---\n"
     except:
         print
         print "\n---An error occurred---\n"

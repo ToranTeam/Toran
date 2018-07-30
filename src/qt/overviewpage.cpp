@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
-// Copyright (c) 2017-2018 The SLTC developers
+// Copyright (c) 2017-2018 The TNX developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,7 +38,7 @@ class TxViewDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
 public:
-    TxViewDelegate() : QAbstractItemDelegate(), unit(BitcoinUnits::SLTC)
+    TxViewDelegate() : QAbstractItemDelegate(), unit(BitcoinUnits::TNX)
     {
     }
 
@@ -167,7 +167,7 @@ OverviewPage::~OverviewPage()
     delete ui;
 }
 
-void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBalance, QString& sSLTCPercentage, QString& szSLTCPercentage)
+void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBalance, QString& sTNXPercentage, QString& szTNXPercentage)
 {
     int nPrecision = 2;
     double dzPercentage = 0.0;
@@ -186,8 +186,8 @@ void OverviewPage::getPercentage(CAmount nUnlockedBalance, CAmount nZerocoinBala
 
     double dPercentage = 100.0 - dzPercentage;
     
-    szSLTCPercentage = "(" + QLocale(QLocale::system()).toString(dzPercentage, 'f', nPrecision) + " %)";
-    sSLTCPercentage = "(" + QLocale(QLocale::system()).toString(dPercentage, 'f', nPrecision) + " %)";
+    szTNXPercentage = "(" + QLocale(QLocale::system()).toString(dzPercentage, 'f', nPrecision) + " %)";
+    sTNXPercentage = "(" + QLocale(QLocale::system()).toString(dPercentage, 'f', nPrecision) + " %)";
     
 }
 
@@ -211,23 +211,23 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
         nLockedBalance = pwalletMain->GetLockedCoins();
         nWatchOnlyLockedBalance = pwalletMain->GetLockedWatchOnlyBalance();
     }
-    // SLTC Balance
+    // TNX Balance
     CAmount nTotalBalance = balance + unconfirmedBalance;
-    CAmount SLTCAvailableBalance = balance - immatureBalance - nLockedBalance;
+    CAmount TNXAvailableBalance = balance - immatureBalance - nLockedBalance;
     CAmount nTotalWatchBalance = watchOnlyBalance + watchUnconfBalance + watchImmatureBalance;    
     CAmount nUnlockedBalance = nTotalBalance - nLockedBalance;
-    // zSLTC Balance
+    // zTNX Balance
     CAmount matureZerocoinBalance = zerocoinBalance - unconfirmedZerocoinBalance - immatureZerocoinBalance;
     // Percentages
     QString szPercentage = "";
     QString sPercentage = "";
     getPercentage(nUnlockedBalance, zerocoinBalance, sPercentage, szPercentage);
     // Combined balances
-    CAmount availableTotalBalance = SLTCAvailableBalance + matureZerocoinBalance;
+    CAmount availableTotalBalance = TNXAvailableBalance + matureZerocoinBalance;
     CAmount sumTotalBalance = nTotalBalance + zerocoinBalance;
 
-    // SLTC labels
-    ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, SLTCAvailableBalance, false, BitcoinUnits::separatorAlways));
+    // TNX labels
+    ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, TNXAvailableBalance, false, BitcoinUnits::separatorAlways));
     ui->labelUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, unconfirmedBalance, false, BitcoinUnits::separatorAlways));
     ui->labelImmature->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, immatureBalance, false, BitcoinUnits::separatorAlways));
     ui->labelLockedBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nLockedBalance, false, BitcoinUnits::separatorAlways));
@@ -240,7 +240,7 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     ui->labelWatchLocked->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nWatchOnlyLockedBalance, false, BitcoinUnits::separatorAlways));
     ui->labelWatchTotal->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, nTotalWatchBalance, false, BitcoinUnits::separatorAlways));
 
-    // zSLTC labels
+    // zTNX labels
     ui->labelzBalance->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, zerocoinBalance, false, BitcoinUnits::separatorAlways));
     ui->labelzBalanceUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, unconfirmedZerocoinBalance, false, BitcoinUnits::separatorAlways));
     ui->labelzBalanceMature->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, matureZerocoinBalance, false, BitcoinUnits::separatorAlways));
@@ -251,19 +251,19 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     ui->labelTotalz->setText(BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, sumTotalBalance, false, BitcoinUnits::separatorAlways));
 
     // Percentage labels
-    ui->labelSLTCPercent->setText(sPercentage);
-    ui->labelzSLTCPercent->setText(szPercentage);
+    ui->labelTNXPercent->setText(sPercentage);
+    ui->labelzTNXPercent->setText(szPercentage);
 
     // Adjust bubble-help according to AutoMint settings
-    QString automintHelp = tr("Current percentage of zSLTC.\nIf AutoMint is enabled this percentage will settle around the configured AutoMint percentage (default = 10%).\n");
+    QString automintHelp = tr("Current percentage of zTNX.\nIf AutoMint is enabled this percentage will settle around the configured AutoMint percentage (default = 10%).\n");
     bool fEnableZeromint = GetBoolArg("-enablezeromint", false);
     int nZeromintPercentage = GetArg("-zeromintpercentage", 10);
     if (fEnableZeromint) {
         automintHelp += tr("AutoMint is currently enabled and set to ") + QString::number(nZeromintPercentage) + "%.\n";
-        automintHelp += tr("To disable AutoMint add 'enablezeromint=0' in SLTC.conf.");
+        automintHelp += tr("To disable AutoMint add 'enablezeromint=0' in TNX.conf.");
     }
     else {
-        automintHelp += tr("AutoMint is currently disabled.\nTo enable AutoMint change 'enablezeromint=0' to 'enablezeromint=1' in SLTC.conf");
+        automintHelp += tr("AutoMint is currently disabled.\nTo enable AutoMint change 'enablezeromint=0' to 'enablezeromint=1' in TNX.conf");
     }
 
     // Only show most balances if they are non-zero for the sake of simplicity
@@ -272,39 +272,39 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     bool showSumAvailable = settingShowAllBalances || sumTotalBalance != availableTotalBalance;
     ui->labelBalanceTextz->setVisible(showSumAvailable);
     ui->labelBalancez->setVisible(showSumAvailable);
-    bool showSLTCAvailable = settingShowAllBalances || SLTCAvailableBalance != nTotalBalance;
-    bool showWatchOnlySLTCAvailable = watchOnlyBalance != nTotalWatchBalance;
-    bool showSLTCPending = settingShowAllBalances || unconfirmedBalance != 0;
-    bool showWatchOnlySLTCPending = watchUnconfBalance != 0;
-    bool showSLTCLocked = settingShowAllBalances || nLockedBalance != 0;
-    bool showWatchOnlySLTCLocked = nWatchOnlyLockedBalance != 0;
+    bool showTNXAvailable = settingShowAllBalances || TNXAvailableBalance != nTotalBalance;
+    bool showWatchOnlyTNXAvailable = watchOnlyBalance != nTotalWatchBalance;
+    bool showTNXPending = settingShowAllBalances || unconfirmedBalance != 0;
+    bool showWatchOnlyTNXPending = watchUnconfBalance != 0;
+    bool showTNXLocked = settingShowAllBalances || nLockedBalance != 0;
+    bool showWatchOnlyTNXLocked = nWatchOnlyLockedBalance != 0;
     bool showImmature = settingShowAllBalances || immatureBalance != 0;
     bool showWatchOnlyImmature = watchImmatureBalance != 0;
     bool showWatchOnly = nTotalWatchBalance != 0;
-    ui->labelBalance->setVisible(showSLTCAvailable || showWatchOnlySLTCAvailable);
-    ui->labelBalanceText->setVisible(showSLTCAvailable || showWatchOnlySLTCAvailable);
-    ui->labelWatchAvailable->setVisible(showSLTCAvailable && showWatchOnly);
-    ui->labelUnconfirmed->setVisible(showSLTCPending || showWatchOnlySLTCPending);
-    ui->labelPendingText->setVisible(showSLTCPending || showWatchOnlySLTCPending);
-    ui->labelWatchPending->setVisible(showSLTCPending && showWatchOnly);
-    ui->labelLockedBalance->setVisible(showSLTCLocked || showWatchOnlySLTCLocked);
-    ui->labelLockedBalanceText->setVisible(showSLTCLocked || showWatchOnlySLTCLocked);
-    ui->labelWatchLocked->setVisible(showSLTCLocked && showWatchOnly);
+    ui->labelBalance->setVisible(showTNXAvailable || showWatchOnlyTNXAvailable);
+    ui->labelBalanceText->setVisible(showTNXAvailable || showWatchOnlyTNXAvailable);
+    ui->labelWatchAvailable->setVisible(showTNXAvailable && showWatchOnly);
+    ui->labelUnconfirmed->setVisible(showTNXPending || showWatchOnlyTNXPending);
+    ui->labelPendingText->setVisible(showTNXPending || showWatchOnlyTNXPending);
+    ui->labelWatchPending->setVisible(showTNXPending && showWatchOnly);
+    ui->labelLockedBalance->setVisible(showTNXLocked || showWatchOnlyTNXLocked);
+    ui->labelLockedBalanceText->setVisible(showTNXLocked || showWatchOnlyTNXLocked);
+    ui->labelWatchLocked->setVisible(showTNXLocked && showWatchOnly);
     ui->labelImmature->setVisible(showImmature || showWatchOnlyImmature); // for symmetry reasons also show immature label when the watch-only one is shown
     ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
     ui->labelWatchImmature->setVisible(showImmature && showWatchOnly); // show watch-only immature balance
-    bool showzSLTCAvailable = settingShowAllBalances || zerocoinBalance != matureZerocoinBalance;
-    bool showzSLTCUnconfirmed = settingShowAllBalances || unconfirmedZerocoinBalance != 0;
-    bool showzSLTCImmature = settingShowAllBalances || immatureZerocoinBalance != 0;
-    ui->labelzBalanceMature->setVisible(showzSLTCAvailable);
-    ui->labelzBalanceMatureText->setVisible(showzSLTCAvailable);
-    ui->labelzBalanceUnconfirmed->setVisible(showzSLTCUnconfirmed);
-    ui->labelzBalanceUnconfirmedText->setVisible(showzSLTCUnconfirmed);
-    ui->labelzBalanceImmature->setVisible(showzSLTCImmature);
-    ui->labelzBalanceImmatureText->setVisible(showzSLTCImmature);
+    bool showzTNXAvailable = settingShowAllBalances || zerocoinBalance != matureZerocoinBalance;
+    bool showzTNXUnconfirmed = settingShowAllBalances || unconfirmedZerocoinBalance != 0;
+    bool showzTNXImmature = settingShowAllBalances || immatureZerocoinBalance != 0;
+    ui->labelzBalanceMature->setVisible(showzTNXAvailable);
+    ui->labelzBalanceMatureText->setVisible(showzTNXAvailable);
+    ui->labelzBalanceUnconfirmed->setVisible(showzTNXUnconfirmed);
+    ui->labelzBalanceUnconfirmedText->setVisible(showzTNXUnconfirmed);
+    ui->labelzBalanceImmature->setVisible(showzTNXImmature);
+    ui->labelzBalanceImmatureText->setVisible(showzTNXImmature);
     bool showPercentages = ! (zerocoinBalance == 0 && nTotalBalance == 0);
-    ui->labelSLTCPercent->setVisible(showPercentages);
-    ui->labelzSLTCPercent->setVisible(showPercentages);
+    ui->labelTNXPercent->setVisible(showPercentages);
+    ui->labelzTNXPercent->setVisible(showPercentages);
 
     static int cachedTxLocks = 0;
 
@@ -375,7 +375,7 @@ void OverviewPage::setWalletModel(WalletModel* model)
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("SLTC")
+    // update the display unit, to not use the default ("TNX")
     updateDisplayUnit();
 }
 

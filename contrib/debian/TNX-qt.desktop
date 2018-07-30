@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=TNX
+Comment=TNX P2P Cryptocurrency
+Comment[fr]=TNX, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=TNX, eşten eşe kriptografik sanal para birimi
+Exec=TNX-qt %u
+Terminal=false
+Type=Application
+Icon=TNX128
+MimeType=x-scheme-handler/TNX;
+Categories=Office;Finance;

@@ -1,4 +1,4 @@
-SLTC Core integration/staging repository
+TNX Core integration/staging repository
 =====================================
 
 ## Coin Specs ##
@@ -6,7 +6,7 @@ SLTC Core integration/staging repository
 <tr><td>Algo</td><td>Quark</td></tr>
 <tr><td>Block Time</td><td>60 Seconds</td></tr>
 <tr><td>Difficulty Retargeting</td><td>Every Block</td></tr>
-<tr><td>Max Coin Supply </td><td>45,500,000 SLTC</td></tr>
+<tr><td>Max Coin Supply </td><td>45,500,000 TNX</td></tr>
 </table>
 
 

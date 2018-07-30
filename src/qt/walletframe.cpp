@@ -204,11 +204,11 @@ void WalletFrame::backupWallet()
         walletView->backupWallet();
 }
 
-void WalletFrame::changePassSLTCase()
+void WalletFrame::changePassTNXase()
 {
     WalletView* walletView = currentWalletView();
     if (walletView)
-        walletView->changePassSLTCase();
+        walletView->changePassTNXase();
 }
 
 void WalletFrame::unlockWallet()

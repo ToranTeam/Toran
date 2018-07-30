@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SLTC_ACCUMULATORCHECKPOINTS_JSON_H
-#define SLTC_ACCUMULATORCHECKPOINTS_JSON_H
+#ifndef TNX_ACCUMULATORCHECKPOINTS_JSON_H
+#define TNX_ACCUMULATORCHECKPOINTS_JSON_H
 
 #include <string>
 std::string GetMainCheckpoints() {
@@ -57,4 +57,4 @@ std::string GetRegTestCheckpoints() {
     return strRegTestCheckpoints;
 }
 
-#endif //SLTC_ACCUMULATORCHECKPOINTS_JSON_H
+#endif //TNX_ACCUMULATORCHECKPOINTS_JSON_H

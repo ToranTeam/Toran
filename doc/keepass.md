@@ -14,44 +14,44 @@ The implementation is dependent on the following:
 What's new
 ----------------
 
-The following new options are available for SLTCd and SLTC-qt:
+The following new options are available for TNXd and TNX-qt:
  - _-keepass_ Use KeePass 2 integration using KeePassHttp plugin (default: 0)
  - _-keepassport=_ Connect to KeePassHttp on port (default: 19455)
  - _-keepasskey=_ KeePassHttp key for AES encrypted communication with KeePass
  - _-keepassid=_ KeePassHttp id for the established association
- - _-keepassname=_ Name to construct url for KeePass entry that stores the wallet passSLTCase
+ - _-keepassname=_ Name to construct url for KeePass entry that stores the wallet passTNXase
 
 The following rpc commands are available:
 
  - _keepass genkey_: generates a base64 encoded 256 bit AES key that can be used for the communication with KeePassHttp. Only necessary for manual configuration. Use init for automatic configuration.
- - _keepass init_: sets up the association between SLTCd and keepass by generating an AES key and sending an association message to KeePassHttp. This will trigger KeePass to ask for an Id for the association. Returns the association and the base64 encoded string for the AES key.
- - _keepass setpassSLTCase_: updates the passSLTCase in KeePassHttp to a new value. This should match the passSLTCase you intend to use for the wallet. Please note that the standard RPC commands _walletpassSLTCasechange_ and the wallet encrption from the QT GUI already send the updates to KeePassHttp, so this is only necessary for manual manipulation of the password.
+ - _keepass init_: sets up the association between TNXd and keepass by generating an AES key and sending an association message to KeePassHttp. This will trigger KeePass to ask for an Id for the association. Returns the association and the base64 encoded string for the AES key.
+ - _keepass setpassTNXase_: updates the passTNXase in KeePassHttp to a new value. This should match the passTNXase you intend to use for the wallet. Please note that the standard RPC commands _walletpassTNXasechange_ and the wallet encrption from the QT GUI already send the updates to KeePassHttp, so this is only necessary for manual manipulation of the password.
 
 How to setup
 ----------------
 
-Sample initialization flow from _SLTC-qt_ console (this needs to be done only once to set up the association):
+Sample initialization flow from _TNX-qt_ console (this needs to be done only once to set up the association):
 
  - Have KeePass running with an open database
- - Start _SLTC-qt_
+ - Start _TNX-qt_
  - Open console
- - Type "_keepass init_" in SLTC-qt console
+ - Type "_keepass init_" in TNX-qt console
  - Keepass pops up and asks for an association id, fill that in, for example, "_mydrkwallet_"
- - You should get a response like this "_Association successful. Id: mydrkwalletSLTC - Key: AgQkcs6cI7v9tlSYKjG/+s8wJrGALHl3jLosJpPLzUE=_"
- - Edit _SLTC.conf_ and fill in these values
+ - You should get a response like this "_Association successful. Id: mydrkwalletTNX - Key: AgQkcs6cI7v9tlSYKjG/+s8wJrGALHl3jLosJpPLzUE=_"
+ - Edit _TNX.conf_ and fill in these values
 ```
 keepass=1
 keepasskey=AgQkcs6cI7v9tlSYKjG/+s8wJrGALHl3jLosJpPLzUE=
 keepassid=mydrkwallet
 keepassname=testwallet
 ```
- - Restart _SLTC-qt_
+ - Restart _TNX-qt_
 
 At this point, the association is made. The next action depends on your particular situation:
 
  - current wallet is not yet encrypted. Encrypting the wallet will trigger the integration and stores the password in KeePass (Under the '_KeePassHttp Passwords_' group, named after _keepassname_.
- - current wallet is already encrypted: use "_keepass setpassSLTCase_" to store the passSLTCase in KeePass.
+ - current wallet is already encrypted: use "_keepass setpassTNXase_" to store the passTNXase in KeePass.
 
-At this point, the passSLTCase is stored in KeePassHttp. When Unlocking the wallet, one can use _keepass_ as the passSLTCase to trigger retrieval of the password. This works from the RPC commands as well as the GUI.
+At this point, the passTNXase is stored in KeePassHttp. When Unlocking the wallet, one can use _keepass_ as the passTNXase to trigger retrieval of the password. This works from the RPC commands as well as the GUI.
 
 Extended guide with screenshots is also available: https://dashtalk.org/threads/keepass-integration.3620/

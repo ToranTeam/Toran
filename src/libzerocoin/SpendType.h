@@ -2,16 +2,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SLTC_SPENDTYPE_H
-#define SLTC_SPENDTYPE_H
+#ifndef TNX_SPENDTYPE_H
+#define TNX_SPENDTYPE_H
 
 #include <cstdint>
 
 namespace libzerocoin {
     enum SpendType : uint8_t {
-        SPEND, // Used for a typical spend transaction, zSLTC should be unusable after
+        SPEND, // Used for a typical spend transaction, zTNX should be unusable after
         STAKE, // Used for a spend that occurs as a stake
-        MN_COLLATERAL, // Used when proving ownership of zSLTC that will be used for masternodes (future)
+        MN_COLLATERAL, // Used when proving ownership of zTNX that will be used for masternodes (future)
         SIGN_MESSAGE // Used to sign messages that do not belong above (future)
     };
 }

@@ -80,15 +80,15 @@ noinst_PROGRAMS =
 TESTS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += SLTCd
+  bin_PROGRAMS += TNXd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += SLTC-cli SLTC-tx
+  bin_PROGRAMS += TNX-cli TNX-tx
 endif
 
 .PHONY: FORCE
-# SLTC core #
+# TNX core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   accumulators.h \
@@ -194,8 +194,8 @@ BITCOIN_CORE_H = \
   wallet.h \
   wallet_ismine.h \
   walletdb.h \
-  zSLTCtracker.h \
-  zSLTCwallet.h \
+  zTNXtracker.h \
+  zTNXwallet.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -207,7 +207,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between SLTCd and SLTC-qt
+# server: shared between TNXd and TNX-qt
 libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_server_a_SOURCES = \
@@ -253,7 +253,7 @@ libbitcoin_zmq_a_SOURCES = \
   zmq/zmqpublishnotifier.cpp
 endif
 
-# wallet: shared between SLTCd and SLTC-qt, but only linked
+# wallet: shared between TNXd and TNX-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -281,8 +281,8 @@ libbitcoin_wallet_a_SOURCES = \
   wallet.cpp \
   wallet_ismine.cpp \
   walletdb.cpp \
-  zSLTCwallet.cpp \
-  zSLTCtracker.cpp \
+  zTNXwallet.cpp \
+  zTNXtracker.cpp \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
@@ -347,7 +347,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Params.cpp \
   libzerocoin/SerialNumberSignatureOfKnowledge.cpp
 
-# common: shared between SLTCd, and SLTC-qt and non-server tools
+# common: shared between TNXd, and TNX-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
@@ -414,7 +414,7 @@ if GLIBC_BACK_COMPAT
 libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
 endif
 
-# cli: shared between SLTC-cli and SLTC-qt
+# cli: shared between TNX-cli and TNX-qt
 libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_cli_a_SOURCES = \
@@ -424,16 +424,16 @@ libbitcoin_cli_a_SOURCES = \
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# SLTCd binary #
-SLTCd_SOURCES = SLTCd.cpp
-SLTCd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-SLTCd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-SLTCd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# TNXd binary #
+TNXd_SOURCES = TNXd.cpp
+TNXd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+TNXd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+TNXd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-SLTCd_SOURCES += SLTCd-res.rc
+TNXd_SOURCES += TNXd-res.rc
 endif
-SLTCd_LDADD = \
+TNXd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
@@ -446,38 +446,38 @@ SLTCd_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-SLTCd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+TNXd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# SLTC-cli binary #
-SLTC_cli_SOURCES = SLTC-cli.cpp
-SLTC_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-SLTC_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-SLTC_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# TNX-cli binary #
+TNX_cli_SOURCES = TNX-cli.cpp
+TNX_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+TNX_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+TNX_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-SLTC_cli_SOURCES += SLTC-cli-res.rc
+TNX_cli_SOURCES += TNX-cli-res.rc
 endif
 
-SLTC_cli_LDADD = \
+TNX_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
 
-SLTC_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+TNX_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# SLTC-tx binary #
-SLTC_tx_SOURCES = SLTC-tx.cpp
-SLTC_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-SLTC_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-SLTC_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# TNX-tx binary #
+TNX_tx_SOURCES = TNX-tx.cpp
+TNX_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+TNX_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+TNX_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-SLTC_tx_SOURCES += SLTC-tx-res.rc
+TNX_tx_SOURCES += TNX-tx-res.rc
 endif
 
-SLTC_tx_LDADD = \
+TNX_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_ZEROCOIN) \
@@ -485,7 +485,7 @@ SLTC_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-SLTC_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+TNX_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #

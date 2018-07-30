@@ -1,6 +1,6 @@
 Mac OS X Build Instructions and Notes
 ====================================
-This guide will show you how to build SLTCd (headless client) for OSX.
+This guide will show you how to build TNXd (headless client) for OSX.
 
 Notes
 -----
@@ -42,14 +42,14 @@ Instructions: Homebrew
         
         Note: On High Sierra (or when libzmq cannot be found), libzmq should be replaced with zeromq
 
-### Building `SLTCd`
+### Building `TNXd`
 
 1. Clone the github tree to get the source code and go into the directory.
 
-        git clone https://github.com/SLTCproject/SLTC.git
-        cd SLTC
+        git clone https://github.com/TNXproject/TNX.git
+        cd TNX
 
-2.  Build SLTCd:
+2.  Build TNXd:
         
         chmod +x share/genbuild.sh autogen.sh 
         ./autogen.sh
@@ -62,7 +62,7 @@ Instructions: Homebrew
 
         make check
 
-4.  (Optional) You can also install SLTCd to your path:
+4.  (Optional) You can also install TNXd to your path:
 
         make install
 
@@ -74,7 +74,7 @@ Download Qt Creator from http://www.qt.io/download/. Download the "community edi
 1. Make sure you installed everything through homebrew mentioned above
 2. Do a proper ./configure --with-gui=qt5 --enable-debug
 3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
-4. Enter "SLTC-qt" as project name, enter src/qt as location
+4. Enter "TNX-qt" as project name, enter src/qt as location
 5. Leave the file selection as it is
 6. Confirm the "summary page"
 7. In the "Projects" tab select "Manage Kits..."
@@ -84,11 +84,11 @@ Download Qt Creator from http://www.qt.io/download/. Download the "community edi
 
 Creating a release build
 ------------------------
-You can ignore this section if you are building `SLTCd` for your own use.
+You can ignore this section if you are building `TNXd` for your own use.
 
-SLTCd/SLTC-cli binaries are not included in the SLTC-Qt.app bundle.
+TNXd/TNX-cli binaries are not included in the TNX-Qt.app bundle.
 
-If you are building `SLTCd` or `SLTC-qt` for others, your build machine should be set up
+If you are building `TNXd` or `TNX-qt` for others, your build machine should be set up
 as follows for maximum compatibility:
 
 All dependencies should be compiled with these flags:
@@ -97,33 +97,33 @@ All dependencies should be compiled with these flags:
  -arch x86_64
  -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
 
-Once dependencies are compiled, see release-process.md for how the SLTC-Qt.app
+Once dependencies are compiled, see release-process.md for how the TNX-Qt.app
 bundle is packaged and signed to create the .dmg disk image that is distributed.
 
 Running
 -------
 
-It's now available at `./SLTCd`, provided that you are still in the `src`
+It's now available at `./TNXd`, provided that you are still in the `src`
 directory. We have to first create the RPC configuration file, though.
 
-Run `./SLTCd` to get the filename where it should be put, or just try these
+Run `./TNXd` to get the filename where it should be put, or just try these
 commands:
 
-    echo -e "rpcuser=SLTCrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/SLTC/SLTC.conf"
-    chmod 600 "/Users/${USER}/Library/Application Support/SLTC/SLTC.conf"
+    echo -e "rpcuser=TNXrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/TNX/TNX.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/TNX/TNX.conf"
 
 The next time you run it, it will start downloading the blockchain, but it won't
 output anything while it's doing this. This process may take several hours;
 you can monitor its process by looking at the debug.log file, like this:
 
-    tail -f $HOME/Library/Application\ Support/SLTC/debug.log
+    tail -f $HOME/Library/Application\ Support/TNX/debug.log
 
 Other commands:
 -------
 
-    ./SLTCd -daemon # to start the SLTC daemon.
-    ./SLTC-cli --help  # for a list of command-line options.
-    ./SLTC-cli help    # When the daemon is running, to get a list of RPC commands
+    ./TNXd -daemon # to start the TNX daemon.
+    ./TNX-cli --help  # for a list of command-line options.
+    ./TNX-cli help    # When the daemon is running, to get a list of RPC commands
     
 Troubleshooting:<a name="trouble"></a>
 ---------
@@ -141,7 +141,7 @@ Troubleshooting:<a name="trouble"></a>
         make
         sudo make install
 
-        Then configure SLTC with this build of BerkeleyDB,
+        Then configure TNX with this build of BerkeleyDB,
         ./configure --with-gui=qt5  LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib/" CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include/"
                 
         
@@ -162,7 +162,7 @@ Otherwise, open Terminal and type in the command to install homebrew:
 
 ```/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"```
 
-The use homebrew to install a number of unix programs and libraries needed to build the SLTC wallet:
+The use homebrew to install a number of unix programs and libraries needed to build the TNX wallet:
 
 ```brew install autoconf automake berkeley-db@4 boost@1.57 git libevent libtool miniupnpc openssl pkg-config protobuf qt zeromq```
 
@@ -176,8 +176,8 @@ Next, switch into your Downloads folder:
 
 The next step is to download the current version of the wallet from Github and go into that directory:
 
-```git clone https://github.com/SLTCproject/SLTC.git```
-```cd SLTC```
+```git clone https://github.com/TNXproject/TNX.git```
+```cd TNX```
 
 Now set some configuration flags:
 
@@ -189,15 +189,15 @@ Then we begin the build process:
 ```./configure```
 ```make```
 
-You have the choice to build the GUI SLTC wallet as a Mac OSX app, described in “How to build the SLTC-Qt App”. If, for whatever reason, you prefer to use the command line tools, continue with “Command line tools”.
+You have the choice to build the GUI TNX wallet as a Mac OSX app, described in “How to build the TNX-Qt App”. If, for whatever reason, you prefer to use the command line tools, continue with “Command line tools”.
 
-### How to build the SLTC-Qt App:
+### How to build the TNX-Qt App:
 
 After make is finished, you can create an App bundle inside a disk image with:
 
 ```make deploy```
 
-Once this is done, you’ll find SLTC-Qt.dmg inside your SLTC folder. Open and install the wallet like any typical Mac app.
+Once this is done, you’ll find TNX-Qt.dmg inside your TNX folder. Open and install the wallet like any typical Mac app.
 
 ### Command line tools
 
@@ -207,8 +207,8 @@ Once the build is complete, switch into the src/qt subdirectory:
 
 And there you have your wallet – you can start it by running:
 
-```./SLTC-qt```
+```./TNX-qt```
 
 You can move the wallet app to another more permanent location. If you have not moved it and want to start your wallet in the future, open Terminal and run this command:
 
-~/Downloads/SLTC/src/qt/SLTC-qt
+~/Downloads/TNX/src/qt/TNX-qt

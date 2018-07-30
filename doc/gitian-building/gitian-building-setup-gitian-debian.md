@@ -66,13 +66,13 @@ cd ..
 
 **Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
 
-Clone the git repositories for SLTC and Gitian.
+Clone the git repositories for TNX and Gitian.
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
-git clone https://github.com/SLTCproject/SLTC
-git clone https://github.com/SLTCproject/gitian.sigs.git
-git clone https://github.com/SLTCproject/SLTC-detached-sigs.git
+git clone https://github.com/TNXproject/TNX
+git clone https://github.com/TNXproject/gitian.sigs.git
+git clone https://github.com/TNXproject/TNX-detached-sigs.git
 ```
 
 Setting up the Gitian image

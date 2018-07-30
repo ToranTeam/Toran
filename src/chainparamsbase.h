@@ -9,8 +9,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between SLTC-cli and SLTCd)
- * of a given instance of the SLTC system.
+ * CBaseChainParams defines the base parameters (shared between TNX-cli and TNXd)
+ * of a given instance of the TNX system.
  */
 class CBaseChainParams
 {

@@ -7,12 +7,12 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/SLTC
-src/SLTCd
-src/SLTC-cli
-src/SLTC-tx
-src/test/test_SLTC
-src/qt/test/test_SLTC-qt
+src/TNX
+src/TNXd
+src/TNX-cli
+src/TNX-tx
+src/test/test_TNX
+src/qt/test/test_TNX-qt
 
 # autoreconf
 Makefile.in
@@ -38,8 +38,8 @@ confdefs.h
 conftest.cpp
 conftest.err
 libtool
-src/config/SLTC-config.h
-src/config/SLTC-config.h.in
+src/config/TNX-config.h
+src/config/TNX-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -64,7 +64,7 @@ src/leveldb/build_config.mk
 *.pyc
 *.o
 *.o-*
-.SLTC
+.TNX
 *.a
 *.pb.cc
 *.pb.h
@@ -84,12 +84,12 @@ src/leveldb/build_config.mk
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-SLTC-qt
-SLTC-Qt.app
+TNX-qt
+TNX-Qt.app
 
 # Unit-tests
 Makefile.test
-SLTC-qt_test
+TNX-qt_test
 src/test/buildenv.py
 
 # Resources cpp
@@ -105,7 +105,7 @@ build
 #lcov
 *.gcno
 /*.info
-test_SLTC.coverage/
+test_TNX.coverage/
 total.coverage/
 coverage_percent.txt
 

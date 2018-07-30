@@ -38,6 +38,6 @@ or with a transparent background).
 Prevent a denial-of-service attack involving flooding a bitcoin node with
 orphan blocks.
 
-The wallet passSLTCase dialog now warns you if the caps lock key was pressed.
+The wallet passTNXase dialog now warns you if the caps lock key was pressed.
 
 Improved searching in addresses and labels in bitcoin-qt.

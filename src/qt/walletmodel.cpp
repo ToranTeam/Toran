@@ -289,7 +289,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
                 return InvalidAmount;
             }
             total += subtotal;
-        } else { // User-entered SLTC address / amount:
+        } else { // User-entered TNX address / amount:
             if (!validateAddress(rcp.address)) {
                 return InvalidAddress;
             }
@@ -327,7 +327,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 
 
         if (recipients[0].useSwiftTX && total > GetSporkValue(SPORK_5_MAX_VALUE) * COIN) {
-            emit message(tr("Send Coins"), tr("SwiftX doesn't support sending values that high yet. Transactions are currently limited to %1 SLTC.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
+            emit message(tr("Send Coins"), tr("SwiftX doesn't support sending values that high yet. Transactions are currently limited to %1 TNX.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
                 CClientUIInterface::MSG_ERROR);
             return TransactionCreationFailed;
         }
@@ -336,7 +336,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         transaction.setTransactionFee(nFeeRequired);
 
         if (recipients[0].useSwiftTX && newTx->GetValueOut() > GetSporkValue(SPORK_5_MAX_VALUE) * COIN) {
-            emit message(tr("Send Coins"), tr("SwiftX doesn't support sending values that high yet. Transactions are currently limited to %1 SLTC.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
+            emit message(tr("Send Coins"), tr("SwiftX doesn't support sending values that high yet. Transactions are currently limited to %1 TNX.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
                 CClientUIInterface::MSG_ERROR);
             return TransactionCreationFailed;
         }
@@ -378,7 +378,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
                 std::string value;
                 rcp.paymentRequest.SerializeToString(&value);
                 newTx->vOrderForm.push_back(make_pair(key, value));
-            } else if (!rcp.message.isEmpty()) // Message from normal SLTC:URI (SLTC:XyZ...?message=example)
+            } else if (!rcp.message.isEmpty()) // Message from normal TNX:URI (TNX:XyZ...?message=example)
             {
                 newTx->vOrderForm.push_back(make_pair("Message", rcp.message.toStdString()));
             }
@@ -450,18 +450,18 @@ WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 
 }
 
-bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString& passSLTCase)
+bool WalletModel::setWalletEncrypted(bool encrypted, const SecureString& passTNXase)
 {
     if (encrypted) {
         // Encrypt
-        return wallet->EncryptWallet(passSLTCase);
+        return wallet->EncryptWallet(passTNXase);
     } else {
         // Decrypt -- TODO; not supported yet
         return false;
     }
 }
 
-bool WalletModel::setWalletLocked(bool locked, const SecureString& passSLTCase, bool anonymizeOnly)
+bool WalletModel::setWalletLocked(bool locked, const SecureString& passTNXase, bool anonymizeOnly)
 {
     if (locked) {
         // Lock
@@ -469,7 +469,7 @@ bool WalletModel::setWalletLocked(bool locked, const SecureString& passSLTCase, 
         return wallet->Lock();
     } else {
         // Unlock
-        return wallet->Unlock(passSLTCase, anonymizeOnly);
+        return wallet->Unlock(passTNXase, anonymizeOnly);
     }
 }
 
@@ -478,13 +478,13 @@ bool WalletModel::isAnonymizeOnlyUnlocked()
     return wallet->fWalletUnlockAnonymizeOnly;
 }
 
-bool WalletModel::changePassSLTCase(const SecureString& oldPass, const SecureString& newPass)
+bool WalletModel::changePassTNXase(const SecureString& oldPass, const SecureString& newPass)
 {
     bool retval;
     {
         LOCK(wallet->cs_wallet);
         wallet->Lock(); // Make sure wallet is locked before attempting pass change
-        retval = wallet->ChangeWalletPassSLTCase(oldPass, newPass);
+        retval = wallet->ChangeWalletPassTNXase(oldPass, newPass);
     }
     return retval;
 }
@@ -750,7 +750,7 @@ void WalletModel::listLockedCoins(std::vector<COutPoint>& vOutpts)
 void WalletModel::listZerocoinMints(std::set<CMintMeta>& setMints, bool fUnusedOnly, bool fMaturedOnly, bool fUpdateStatus)
 {
     setMints.clear();
-    setMints = pwalletMain->zSLTCTracker->ListMints(fUnusedOnly, fMaturedOnly, fUpdateStatus);
+    setMints = pwalletMain->zTNXTracker->ListMints(fUnusedOnly, fMaturedOnly, fUpdateStatus);
 }
 
 void WalletModel::loadReceiveRequests(std::vector<std::string>& vReceiveRequests)

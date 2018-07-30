@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SLTC_DETERMINISTICMINT_H
-#define SLTC_DETERMINISTICMINT_H
+#ifndef TNX_DETERMINISTICMINT_H
+#define TNX_DETERMINISTICMINT_H
 
 #include "libzerocoin/Denominations.h"
 #include "uint256.h"
@@ -64,4 +64,4 @@ public:
     };
 };
 
-#endif //SLTC_DETERMINISTICMINT_H
+#endif //TNX_DETERMINISTICMINT_H

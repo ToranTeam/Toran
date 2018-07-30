@@ -23,8 +23,8 @@
 #include "validationinterface.h"
 #include "wallet_ismine.h"
 #include "walletdb.h"
-#include "zSLTCtracker.h"
-#include "zSLTCwallet.h"
+#include "zTNXtracker.h"
+#include "zTNXwallet.h"
 
 #include <algorithm>
 #include <map>
@@ -84,30 +84,30 @@ enum AvailableCoinsType {
     ALL_COINS = 1,
     ONLY_DENOMINATED = 2,
     ONLY_NOT10000IFMN = 3,
-    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 SLTC at the same time
+    ONLY_NONDENOMINATED_NOT10000IFMN = 4, // ONLY_NONDENOMINATED and not 10000 TNX at the same time
     ONLY_10000 = 5,                        // find masternode outputs including locked ones (use with caution)
     STAKABLE_COINS = 6                          // UTXO's that are valid for staking
 };
 
-// Possible states for zSLTC send
+// Possible states for zTNX send
 enum ZerocoinSpendStatus {
-    ZSLTC_SPEND_OKAY = 0,                            // No error
-    ZSLTC_SPEND_ERROR = 1,                           // Unspecified class of errors, more details are (hopefully) in the returning text
-    ZSLTC_WALLET_LOCKED = 2,                         // Wallet was locked
-    ZSLTC_COMMIT_FAILED = 3,                         // Commit failed, reset status
-    ZSLTC_ERASE_SPENDS_FAILED = 4,                   // Erasing spends during reset failed
-    ZSLTC_ERASE_NEW_MINTS_FAILED = 5,                // Erasing new mints during reset failed
-    ZSLTC_TRX_FUNDS_PROBLEMS = 6,                    // Everything related to available funds
-    ZSLTC_TRX_CREATE = 7,                            // Everything related to create the transaction
-    ZSLTC_TRX_CHANGE = 8,                            // Everything related to transaction change
-    ZSLTC_TXMINT_GENERAL = 9,                        // General errors in MintToTxIn
-    ZSLTC_INVALID_COIN = 10,                         // Selected mint coin is not valid
-    ZSLTC_FAILED_ACCUMULATOR_INITIALIZATION = 11,    // Failed to initialize witness
-    ZSLTC_INVALID_WITNESS = 12,                      // Spend coin transaction did not verify
-    ZSLTC_BAD_SERIALIZATION = 13,                    // Transaction verification failed
-    ZSLTC_SPENT_USED_ZSLTC = 14,                      // Coin has already been spend
-    ZSLTC_TX_TOO_LARGE = 15,                         // The transaction is larger than the max tx size
-    ZSLTC_SPEND_V1_SEC_LEVEL
+    ZTNX_SPEND_OKAY = 0,                            // No error
+    ZTNX_SPEND_ERROR = 1,                           // Unspecified class of errors, more details are (hopefully) in the returning text
+    ZTNX_WALLET_LOCKED = 2,                         // Wallet was locked
+    ZTNX_COMMIT_FAILED = 3,                         // Commit failed, reset status
+    ZTNX_ERASE_SPENDS_FAILED = 4,                   // Erasing spends during reset failed
+    ZTNX_ERASE_NEW_MINTS_FAILED = 5,                // Erasing new mints during reset failed
+    ZTNX_TRX_FUNDS_PROBLEMS = 6,                    // Everything related to available funds
+    ZTNX_TRX_CREATE = 7,                            // Everything related to create the transaction
+    ZTNX_TRX_CHANGE = 8,                            // Everything related to transaction change
+    ZTNX_TXMINT_GENERAL = 9,                        // General errors in MintToTxIn
+    ZTNX_INVALID_COIN = 10,                         // Selected mint coin is not valid
+    ZTNX_FAILED_ACCUMULATOR_INITIALIZATION = 11,    // Failed to initialize witness
+    ZTNX_INVALID_WITNESS = 12,                      // Spend coin transaction did not verify
+    ZTNX_BAD_SERIALIZATION = 13,                    // Transaction verification failed
+    ZTNX_SPENT_USED_ZTNX = 14,                      // Coin has already been spend
+    ZTNX_TX_TOO_LARGE = 15,                         // The transaction is larger than the max tx size
+    ZTNX_SPEND_V1_SEC_LEVEL
 };
 
 enum OutputType : int
@@ -226,15 +226,15 @@ public:
     std::string ResetMintZerocoin();
     std::string ResetSpentZerocoin();
     void ReconsiderZerocoins(std::list<CZerocoinMint>& listMintsRestored, std::list<CDeterministicMint>& listDMintsRestored);
-    void ZSLTCBackupWallet();
+    void ZTNXBackupWallet();
     bool GetZerocoinKey(const CBigNum& bnSerial, CKey& key);
-    bool CreateZSLTCOutput(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
+    bool CreateZTNXOutput(libzerocoin::CoinDenomination denomination, CTxOut& outMint, CDeterministicMint& dMint);
     bool GetMint(const uint256& hashSerial, CZerocoinMint& mint);
     bool GetMintFromStakeHash(const uint256& hashStake, CZerocoinMint& mint);
     bool DatabaseMint(CDeterministicMint& dMint);
     bool SetMintUnspent(const CBigNum& bnSerial);
     bool UpdateMint(const CBigNum& bnValue, const int& nHeight, const uint256& txid, const libzerocoin::CoinDenomination& denom);
-    string GetUniqueWalletBackupName(bool fzSLTCAuto) const;
+    string GetUniqueWalletBackupName(bool fzTNXAuto) const;
 
     /** Zerocin entry changed.
     * @note called with lock cs_wallet held.
@@ -249,13 +249,13 @@ public:
      */
     mutable CCriticalSection cs_wallet;
 
-    CzSLTCWallet* zwalletMain;
+    CzTNXWallet* zwalletMain;
 
     bool fFileBacked;
     bool fWalletUnlockAnonymizeOnly;
     std::string strWalletFile;
     bool fBackupMints;
-    std::unique_ptr<CzSLTCTracker> zSLTCTracker;
+    std::unique_ptr<CzTNXTracker> zTNXTracker;
 
     std::set<int64_t> setKeyPool;
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
@@ -340,13 +340,13 @@ public:
         return nZeromintPercentage;
     }
 
-    void setZWallet(CzSLTCWallet* zwallet)
+    void setZWallet(CzTNXWallet* zwallet)
     {
         zwalletMain = zwallet;
-        zSLTCTracker = std::unique_ptr<CzSLTCTracker>(new CzSLTCTracker(strWalletFile));
+        zTNXTracker = std::unique_ptr<CzTNXTracker>(new CzTNXTracker(strWalletFile));
     }
 
-    CzSLTCWallet* getZWallet() { return zwalletMain; }
+    CzTNXWallet* getZWallet() { return zwalletMain; }
 
 
     bool isZeromintEnabled()
@@ -354,7 +354,7 @@ public:
         return fEnableZeromint;
     }
 
-    void setZSLTCAutoBackups(bool fEnabled)
+    void setZTNXAutoBackups(bool fEnabled)
     {
         fBackupMints = fEnabled;
     }
@@ -462,9 +462,9 @@ public:
     //! Adds a MultiSig address to the store, without saving it to disk (used by LoadWallet)
     bool LoadMultiSig(const CScript& dest);
 
-    bool Unlock(const SecureString& strWalletPassSLTCase, bool anonimizeOnly = false);
-    bool ChangeWalletPassSLTCase(const SecureString& strOldWalletPassSLTCase, const SecureString& strNewWalletPassSLTCase);
-    bool EncryptWallet(const SecureString& strWalletPassSLTCase);
+    bool Unlock(const SecureString& strWalletPassTNXase, bool anonimizeOnly = false);
+    bool ChangeWalletPassTNXase(const SecureString& strOldWalletPassTNXase, const SecureString& strNewWalletPassTNXase);
+    bool EncryptWallet(const SecureString& strWalletPassTNXase);
 
     void GetKeyBirthTimes(std::map<CKeyID, int64_t>& mapKeyBirth) const;
     unsigned int ComputeTimeSmart(const CWalletTx& wtx) const;

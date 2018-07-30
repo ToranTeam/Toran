@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2015-2017 The PIVX developers
-// Copyright (c) 2017 The SLTC developers
+// Copyright (c) 2017 The TNX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -265,10 +265,10 @@ UniValue stop(const UniValue& params, bool fHelp)
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "stop\n"
-            "\nStop SLTC server.");
+            "\nStop TNX server.");
     // Shutdown will take long enough that the response should get back
     StartShutdown();
-    return "SLTC server stopping";
+    return "TNX server stopping";
 }
 
 
@@ -352,38 +352,38 @@ static const CRPCCommand vRPCCommands[] =
         {"hidden", "reconsiderblock", &reconsiderblock, true, true, false},
         {"hidden", "setmocktime", &setmocktime, true, false, false},
 
-        /* SLTC features */
-        {"SLTC", "masternode", &masternode, true, true, false},
-        {"SLTC", "listmasternodes", &listmasternodes, true, true, false},
-        {"SLTC", "createmasternodebroadcast", &createmasternodebroadcast, true, true, false},
-        {"SLTC", "decodemasternodebroadcast", &decodemasternodebroadcast, true, true, false},
-        {"SLTC", "relaymasternodebroadcast", &relaymasternodebroadcast, true, true, false},
-        {"SLTC", "getmasternodecount", &getmasternodecount, true, true, false},
-        {"SLTC", "masternodeconnect", &masternodeconnect, true, true, false},
-        {"SLTC", "masternodecurrent", &masternodecurrent, true, true, false},
-        {"SLTC", "masternodedebug", &masternodedebug, true, true, false},
-        {"SLTC", "startmasternode", &startmasternode, true, true, false},
-        {"SLTC", "createmasternodekey", &createmasternodekey, true, true, false},
-        {"SLTC", "getmasternodeoutputs", &getmasternodeoutputs, true, true, false},
-        {"SLTC", "listmasternodeconf", &listmasternodeconf, true, true, false},
-        {"SLTC", "getmasternodestatus", &getmasternodestatus, true, true, false},
-        {"SLTC", "getmasternodewinners", &getmasternodewinners, true, true, false},
-        {"SLTC", "getmasternodescores", &getmasternodescores, true, true, false},
-        {"SLTC", "mnbudget", &mnbudget, true, true, false},
-        {"SLTC", "preparebudget", &preparebudget, true, true, false},
-        {"SLTC", "submitbudget", &submitbudget, true, true, false},
-        {"SLTC", "mnbudgetvote", &mnbudgetvote, true, true, false},
-        {"SLTC", "getbudgetvotes", &getbudgetvotes, true, true, false},
-        {"SLTC", "getnextsuperblock", &getnextsuperblock, true, true, false},
-        {"SLTC", "getbudgetprojection", &getbudgetprojection, true, true, false},
-        {"SLTC", "getbudgetinfo", &getbudgetinfo, true, true, false},
-        {"SLTC", "mnbudgetrawvote", &mnbudgetrawvote, true, true, false},
-        {"SLTC", "mnfinalbudget", &mnfinalbudget, true, true, false},
-        {"SLTC", "checkbudgets", &checkbudgets, true, true, false},
-        {"SLTC", "mnsync", &mnsync, true, true, false},
-        {"SLTC", "spork", &spork, true, true, false},
-        {"SLTC", "getpoolinfo", &getpoolinfo, true, true, false},
-        {"SLTC", "makekeypair", &makekeypair, true, true, false},
+        /* TNX features */
+        {"TNX", "masternode", &masternode, true, true, false},
+        {"TNX", "listmasternodes", &listmasternodes, true, true, false},
+        {"TNX", "createmasternodebroadcast", &createmasternodebroadcast, true, true, false},
+        {"TNX", "decodemasternodebroadcast", &decodemasternodebroadcast, true, true, false},
+        {"TNX", "relaymasternodebroadcast", &relaymasternodebroadcast, true, true, false},
+        {"TNX", "getmasternodecount", &getmasternodecount, true, true, false},
+        {"TNX", "masternodeconnect", &masternodeconnect, true, true, false},
+        {"TNX", "masternodecurrent", &masternodecurrent, true, true, false},
+        {"TNX", "masternodedebug", &masternodedebug, true, true, false},
+        {"TNX", "startmasternode", &startmasternode, true, true, false},
+        {"TNX", "createmasternodekey", &createmasternodekey, true, true, false},
+        {"TNX", "getmasternodeoutputs", &getmasternodeoutputs, true, true, false},
+        {"TNX", "listmasternodeconf", &listmasternodeconf, true, true, false},
+        {"TNX", "getmasternodestatus", &getmasternodestatus, true, true, false},
+        {"TNX", "getmasternodewinners", &getmasternodewinners, true, true, false},
+        {"TNX", "getmasternodescores", &getmasternodescores, true, true, false},
+        {"TNX", "mnbudget", &mnbudget, true, true, false},
+        {"TNX", "preparebudget", &preparebudget, true, true, false},
+        {"TNX", "submitbudget", &submitbudget, true, true, false},
+        {"TNX", "mnbudgetvote", &mnbudgetvote, true, true, false},
+        {"TNX", "getbudgetvotes", &getbudgetvotes, true, true, false},
+        {"TNX", "getnextsuperblock", &getnextsuperblock, true, true, false},
+        {"TNX", "getbudgetprojection", &getbudgetprojection, true, true, false},
+        {"TNX", "getbudgetinfo", &getbudgetinfo, true, true, false},
+        {"TNX", "mnbudgetrawvote", &mnbudgetrawvote, true, true, false},
+        {"TNX", "mnfinalbudget", &mnfinalbudget, true, true, false},
+        {"TNX", "checkbudgets", &checkbudgets, true, true, false},
+        {"TNX", "mnsync", &mnsync, true, true, false},
+        {"TNX", "spork", &spork, true, true, false},
+        {"TNX", "getpoolinfo", &getpoolinfo, true, true, false},
+        {"TNX", "makekeypair", &makekeypair, true, true, false},
 #ifdef ENABLE_WALLET
         /* Wallet */
         {"wallet", "addmultisigaddress", &addmultisigaddress, true, false, true},
@@ -434,8 +434,8 @@ static const CRPCCommand vRPCCommands[] =
         {"wallet", "settxfee", &settxfee, true, false, true},
         {"wallet", "signmessage", &signmessage, true, false, true},
         {"wallet", "walletlock", &walletlock, true, false, true},
-        {"wallet", "walletpassSLTCasechange", &walletpassSLTCasechange, true, false, true},
-        {"wallet", "walletpassSLTCase", &walletpassSLTCase, true, false, true},
+        {"wallet", "walletpassTNXasechange", &walletpassTNXasechange, true, false, true},
+        {"wallet", "walletpassTNXase", &walletpassTNXase, true, false, true},
 
         {"zerocoin", "getzerocoinbalance", &getzerocoinbalance, false, false, true},
         {"zerocoin", "listmintedzerocoins", &listmintedzerocoins, false, false, true},
@@ -450,8 +450,8 @@ static const CRPCCommand vRPCCommands[] =
         {"zerocoin", "exportzerocoins", &exportzerocoins, false, false, true},
         {"zerocoin", "reconsiderzerocoins", &reconsiderzerocoins, false, false, true},
         {"zerocoin", "getspentzerocoinamount", &getspentzerocoinamount, false, false, false},
-        {"zerocoin", "getzSLTCseed", &getzSLTCseed, false, false, true},
-        {"zerocoin", "setzSLTCseed", &setzSLTCseed, false, false, true}
+        {"zerocoin", "getzTNXseed", &getzTNXseed, false, false, true},
+        {"zerocoin", "setzTNXseed", &setzTNXseed, false, false, true}
 
 #endif // ENABLE_WALLET
 };
@@ -615,14 +615,14 @@ std::vector<std::string> CRPCTable::listCommands() const
 
 std::string HelpExampleCli(string methodname, string args)
 {
-    return "> SLTC-cli " + methodname + " " + args + "\n";
+    return "> TNX-cli " + methodname + " " + args + "\n";
 }
 
 std::string HelpExampleRpc(string methodname, string args)
 {
     return "> curl --user myusername --data-binary '{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", "
            "\"method\": \"" +
-           methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:20102/\n";
+           methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:16209/\n";
 }
 
 void RPCRegisterTimerInterface(RPCTimerInterface *iface)

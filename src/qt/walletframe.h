@@ -79,9 +79,9 @@ public slots:
     void encryptWallet(bool status);
     /** Backup the wallet */
     void backupWallet();
-    /** Change encrypted wallet passSLTCase */
-    void changePassSLTCase();
-    /** Ask for passSLTCase to unlock wallet temporarily */
+    /** Change encrypted wallet passTNXase */
+    void changePassTNXase();
+    /** Ask for passTNXase to unlock wallet temporarily */
     void unlockWallet();
     /** Lock wallet */
     void lockWallet();

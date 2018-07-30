@@ -109,9 +109,9 @@ public slots:
     void encryptWallet(bool status);
     /** Backup the wallet */
     void backupWallet();
-    /** Change encrypted wallet passSLTCase */
-    void changePassSLTCase();
-    /** Ask for passSLTCase to unlock wallet temporarily */
+    /** Change encrypted wallet passTNXase */
+    void changePassTNXase();
+    /** Ask for passTNXase to unlock wallet temporarily */
     void unlockWallet();
     /** Lock wallet */
     void lockWallet();
@@ -129,7 +129,7 @@ public slots:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString& title, int nProgress);
 
-    /** Update selected SLTC amount from transactionview */
+    /** Update selected TNX amount from transactionview */
     void trxAmount(QString amount);
 
 signals:

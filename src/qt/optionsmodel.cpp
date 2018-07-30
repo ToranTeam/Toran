@@ -5,7 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/SLTC-config.h"
+#include "config/TNX-config.h"
 #endif
 
 #include "optionsmodel.h"
@@ -62,7 +62,7 @@ void OptionsModel::Init()
 
     // Display
     if (!settings.contains("nDisplayUnit"))
-        settings.setValue("nDisplayUnit", BitcoinUnits::SLTC);
+        settings.setValue("nDisplayUnit", BitcoinUnits::TNX);
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
@@ -87,10 +87,10 @@ void OptionsModel::Init()
         settings.setValue("nPreferredDenom", 0);
     nPreferredDenom = settings.value("nPreferredDenom", "0").toLongLong();
 
-    if (!settings.contains("nAnonymizeSLTCAmount"))
-        settings.setValue("nAnonymizeSLTCAmount", 1000);
+    if (!settings.contains("nAnonymizeTNXAmount"))
+        settings.setValue("nAnonymizeTNXAmount", 1000);
 
-    nAnonymizeSLTCAmount = settings.value("nAnonymizeSLTCAmount").toLongLong();
+    nAnonymizeTNXAmount = settings.value("nAnonymizeTNXAmount").toLongLong();
 
     if (!settings.contains("fShowMasternodesTab"))
         settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
@@ -164,8 +164,8 @@ void OptionsModel::Init()
         SoftSetArg("-zeromintpercentage", settings.value("nZeromintPercentage").toString().toStdString());
     if (settings.contains("nPreferredDenom"))
         SoftSetArg("-preferredDenom", settings.value("nPreferredDenom").toString().toStdString());
-    if (settings.contains("nAnonymizeSLTCAmount"))
-        SoftSetArg("-anonymizeSLTCamount", settings.value("nAnonymizeSLTCAmount").toString().toStdString());
+    if (settings.contains("nAnonymizeTNXAmount"))
+        SoftSetArg("-anonymizeTNXamount", settings.value("nAnonymizeTNXAmount").toString().toStdString());
 
     language = settings.value("language").toString();
 }
@@ -176,7 +176,7 @@ void OptionsModel::Reset()
 
     // Remove all entries from our QSettings object
     settings.clear();
-    resetSettings = true; // Needed in SLTC.cpp during shotdown to also remove the window positions
+    resetSettings = true; // Needed in TNX.cpp during shotdown to also remove the window positions
 
     // default setting for OptionsModel::StartAtStartup - disabled
     if (GUIUtil::GetStartOnSystemStartup())
@@ -256,8 +256,8 @@ QVariant OptionsModel::data(const QModelIndex& index, int role) const
             return QVariant(nZeromintPercentage);
         case ZeromintPrefDenom:
             return QVariant(nPreferredDenom);
-        case AnonymizeSLTCAmount:
-            return QVariant(nAnonymizeSLTCAmount);
+        case AnonymizeTNXAmount:
+            return QVariant(nAnonymizeTNXAmount);
         case Listen:
             return settings.value("fListen");
         default:
@@ -386,10 +386,10 @@ bool OptionsModel::setData(const QModelIndex& index, const QVariant& value, int 
             emit hideZeroBalancesChanged(fHideZeroBalances);
             break;
 
-        case AnonymizeSLTCAmount:
-            nAnonymizeSLTCAmount = value.toInt();
-            settings.setValue("nAnonymizeSLTCAmount", nAnonymizeSLTCAmount);
-            emit anonymizeSLTCAmountChanged(nAnonymizeSLTCAmount);
+        case AnonymizeTNXAmount:
+            nAnonymizeTNXAmount = value.toInt();
+            settings.setValue("nAnonymizeTNXAmount", nAnonymizeTNXAmount);
+            emit anonymizeTNXAmountChanged(nAnonymizeTNXAmount);
             break;
         case CoinControlFeatures:
             fCoinControlFeatures = value.toBool();

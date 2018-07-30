@@ -56,7 +56,7 @@ UniValue getinfo(const UniValue& params, bool fHelp)
             "  \"version\": xxxxx,           (numeric) the server version\n"
             "  \"protocolversion\": xxxxx,   (numeric) the protocol version\n"
             "  \"walletversion\": xxxxx,     (numeric) the wallet version\n"
-            "  \"balance\": xxxxxxx,         (numeric) the total SLTC balance of the wallet (excluding zerocoins)\n"
+            "  \"balance\": xxxxxxx,         (numeric) the total TNX balance of the wallet (excluding zerocoins)\n"
             "  \"zerocoinbalance\": xxxxxxx, (numeric) the total zerocoin balance of the wallet\n"
             "  \"blocks\": xxxxxx,           (numeric) the current number of blocks processed in the server\n"
             "  \"timeoffset\": xxxxx,        (numeric) the time offset\n"
@@ -65,23 +65,23 @@ UniValue getinfo(const UniValue& params, bool fHelp)
             "  \"difficulty\": xxxxxx,       (numeric) the current difficulty\n"
             "  \"testnet\": true|false,      (boolean) if the server is using testnet or not\n"
             "  \"moneysupply\" : \"supply\"       (numeric) The money supply when this block was added to the blockchain\n"
-            "  \"zSLTCsupply\" :\n"
+            "  \"zTNXsupply\" :\n"
             "  {\n"
-            "     \"1\" : n,            (numeric) supply of 1 zSLTC denomination\n"
-            "     \"5\" : n,            (numeric) supply of 5 zSLTC denomination\n"
-            "     \"10\" : n,           (numeric) supply of 10 zSLTC denomination\n"
-            "     \"50\" : n,           (numeric) supply of 50 zSLTC denomination\n"
-            "     \"100\" : n,          (numeric) supply of 100 zSLTC denomination\n"
-            "     \"500\" : n,          (numeric) supply of 500 zSLTC denomination\n"
-            "     \"1000\" : n,         (numeric) supply of 1000 zSLTC denomination\n"
-            "     \"5000\" : n,         (numeric) supply of 5000 zSLTC denomination\n"
-            "     \"total\" : n,        (numeric) The total supply of all zSLTC denominations\n"
+            "     \"1\" : n,            (numeric) supply of 1 zTNX denomination\n"
+            "     \"5\" : n,            (numeric) supply of 5 zTNX denomination\n"
+            "     \"10\" : n,           (numeric) supply of 10 zTNX denomination\n"
+            "     \"50\" : n,           (numeric) supply of 50 zTNX denomination\n"
+            "     \"100\" : n,          (numeric) supply of 100 zTNX denomination\n"
+            "     \"500\" : n,          (numeric) supply of 500 zTNX denomination\n"
+            "     \"1000\" : n,         (numeric) supply of 1000 zTNX denomination\n"
+            "     \"5000\" : n,         (numeric) supply of 5000 zTNX denomination\n"
+            "     \"total\" : n,        (numeric) The total supply of all zTNX denominations\n"
             "  }\n"
             "  \"keypoololdest\": xxxxxx,    (numeric) the timestamp (seconds since GMT epoch) of the oldest pre-generated key in the key pool\n"
             "  \"keypoolsize\": xxxx,        (numeric) how many new keys are pre-generated\n"
             "  \"unlocked_until\": ttt,      (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
-            "  \"paytxfee\": x.xxxx,         (numeric) the transaction fee set in SLTC/kb\n"
-            "  \"relayfee\": x.xxxx,         (numeric) minimum relay fee for non-free transactions in SLTC/kb\n"
+            "  \"paytxfee\": x.xxxx,         (numeric) the transaction fee set in TNX/kb\n"
+            "  \"relayfee\": x.xxxx,         (numeric) minimum relay fee for non-free transactions in TNX/kb\n"
             "  \"staking status\": true|false,  (boolean) if the wallet is staking or not\n"
             "  \"errors\": \"...\"           (string) any error messages\n"
             "}\n"
@@ -121,12 +121,12 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     }
 
     obj.push_back(Pair("moneysupply",ValueFromAmount(chainActive.Tip()->nMoneySupply)));
-    UniValue zSLTCObj(UniValue::VOBJ);
+    UniValue zTNXObj(UniValue::VOBJ);
     for (auto denom : libzerocoin::zerocoinDenomList) {
-        zSLTCObj.push_back(Pair(to_string(denom), ValueFromAmount(chainActive.Tip()->mapZerocoinSupply.at(denom) * (denom*COIN))));
+        zTNXObj.push_back(Pair(to_string(denom), ValueFromAmount(chainActive.Tip()->mapZerocoinSupply.at(denom) * (denom*COIN))));
     }
-    zSLTCObj.push_back(Pair("total", ValueFromAmount(chainActive.Tip()->GetZerocoinSupply())));
-    obj.push_back(Pair("zSLTCsupply", zSLTCObj));
+    zTNXObj.push_back(Pair("total", ValueFromAmount(chainActive.Tip()->GetZerocoinSupply())));
+    obj.push_back(Pair("zTNXsupply", zTNXObj));
     
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
@@ -347,7 +347,7 @@ UniValue spork(const UniValue& params, bool fHelp)
         "spork <name> [<value>]\n"
         "<name> is the corresponding spork name, or 'show' to show all current spork settings, active to show which sporks are active"
         "<value> is a epoch datetime to enable or disable spork" +
-        HelpRequiringPassSLTCase());
+        HelpRequiringPassTNXase());
 }
 
 UniValue validateaddress(const UniValue& params, bool fHelp)
@@ -481,9 +481,9 @@ UniValue createmultisig(const UniValue& params, bool fHelp)
 
                      "\nArguments:\n"
                      "1. nrequired      (numeric, required) The number of required signatures out of the n keys or addresses.\n"
-                     "2. \"keys\"       (string, required) A json array of keys which are SLTC addresses or hex-encoded public keys\n"
+                     "2. \"keys\"       (string, required) A json array of keys which are TNX addresses or hex-encoded public keys\n"
                      "     [\n"
-                     "       \"key\"    (string) SLTC address or hex-encoded public key\n"
+                     "       \"key\"    (string) TNX address or hex-encoded public key\n"
                      "       ,...\n"
                      "     ]\n"
 
@@ -551,17 +551,17 @@ UniValue verifymessage(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 3)
         throw runtime_error(
-            "verifymessage \"SLTCaddress\" \"signature\" \"message\"\n"
+            "verifymessage \"TNXaddress\" \"signature\" \"message\"\n"
             "\nVerify a signed message\n"
             "\nArguments:\n"
-            "1. \"SLTCaddress\"  (string, required) The SLTC address to use for the signature.\n"
+            "1. \"TNXaddress\"  (string, required) The TNX address to use for the signature.\n"
             "2. \"signature\"       (string, required) The signature provided by the signer in base 64 encoding (see signmessage).\n"
             "3. \"message\"         (string, required) The message that was signed.\n"
             "\nResult:\n"
             "true|false   (boolean) If the signature is verified or not.\n"
             "\nExamples:\n"
             "\nUnlock the wallet for 30 seconds\n" +
-            HelpExampleCli("walletpassSLTCase", "\"mypassSLTCase\" 30") +
+            HelpExampleCli("walletpassTNXase", "\"mypassTNXase\" 30") +
             "\nCreate the signature\n" + HelpExampleCli("signmessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XZ\" \"my message\"") +
             "\nVerify the signature\n" + HelpExampleCli("verifymessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XZ\" \"signature\" \"my message\"") +
             "\nAs json rpc\n" + HelpExampleRpc("verifymessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XZ\", \"signature\", \"my message\""));

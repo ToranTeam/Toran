@@ -39,7 +39,7 @@ void TrafficGraphWidget::setClientModel(ClientModel* model)
     }
 }
 
-int TrafficGraphWidget::getGraSLTCangeMins() const
+int TrafficGraphWidget::getGraTNXangeMins() const
 {
     return nMins;
 }
@@ -148,7 +148,7 @@ void TrafficGraphWidget::updateRates()
     update();
 }
 
-void TrafficGraphWidget::setGraSLTCangeMins(int mins)
+void TrafficGraphWidget::setGraTNXangeMins(int mins)
 {
     nMins = mins;
     int msecsPerSample = nMins * 60 * 1000 / DESIRED_SAMPLES;

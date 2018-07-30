@@ -1,10 +1,10 @@
 Sample configuration files for:
 
-SystemD: SLTCd.service
-Upstart: SLTCd.conf
-OpenRC:  SLTCd.openrc
-         SLTCd.openrcconf
-CentOS:  SLTCd.init
+SystemD: TNXd.service
+Upstart: TNXd.conf
+OpenRC:  TNXd.openrc
+         TNXd.openrcconf
+CentOS:  TNXd.init
 
 have been made available to assist packagers in creating node packages here.
 

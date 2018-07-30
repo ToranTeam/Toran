@@ -354,7 +354,7 @@
        <item row="16" column="0">
         <widget class="QPushButton" name="openDebugLogfileButton">
          <property name="toolTip">
-          <string>Open the SLTC debug log file from the current data directory. This can take a few seconds for large log files.</string>
+          <string>Open the TNX debug log file from the current data directory. This can take a few seconds for large log files.</string>
          </property>
          <property name="text">
           <string>&amp;Open</string>
@@ -423,7 +423,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../SLTC.qrc">
+            <iconset resource="../TNX.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
            <property name="shortcut">
@@ -458,7 +458,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QSlider" name="sldGraSLTCange">
+            <widget class="QSlider" name="sldGraTNXange">
              <property name="minimum">
               <number>1</number>
              </property>
@@ -477,7 +477,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="lblGraSLTCange">
+            <widget class="QLabel" name="lblGraTNXange">
              <property name="minimumSize">
               <size>
                <width>100</width>
@@ -1326,9 +1326,9 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="wallet_customzSLTCbackuppath_label">
+        <widget class="QLabel" name="wallet_customzTNXbackuppath_label">
          <property name="text">
-          <string>Custom zSLTC Backup Path:</string>
+          <string>Custom zTNX Backup Path:</string>
          </property>
          <property name="visible">
           <bool>false</bool>
@@ -1336,7 +1336,7 @@
         </widget>
        </item>
        <item row="4" column="1" colspan="3">
-        <widget class="QLabel" name="wallet_customzSLTCbackuppath">
+        <widget class="QLabel" name="wallet_customzTNXbackuppath">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
@@ -1637,7 +1637,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../SLTC.qrc"/>
+  <include location="../TNX.qrc"/>
  </resources>
  <connections/>
 </ui>

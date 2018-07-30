@@ -19,18 +19,18 @@ BitcoinUnits::BitcoinUnits(QObject* parent) : QAbstractListModel(parent),
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(SLTC);
-    unitlist.append(mSLTC);
-    unitlist.append(uSLTC);
+    unitlist.append(TNX);
+    unitlist.append(mTNX);
+    unitlist.append(uTNX);
     return unitlist;
 }
 
 bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
-    case SLTC:
-    case mSLTC:
-    case uSLTC:
+    case TNX:
+    case mTNX:
+    case uTNX:
         return true;
     default:
         return false;
@@ -40,12 +40,12 @@ bool BitcoinUnits::valid(int unit)
 QString BitcoinUnits::id(int unit)
 {
     switch (unit) {
-    case SLTC:
-        return QString("SLTC");
-    case mSLTC:
-        return QString("mSLTC");
-    case uSLTC:
-        return QString::fromUtf8("uSLTC");
+    case TNX:
+        return QString("TNX");
+    case mTNX:
+        return QString("mTNX");
+    case uTNX:
+        return QString::fromUtf8("uTNX");
     default:
         return QString("???");
     }
@@ -55,23 +55,23 @@ QString BitcoinUnits::name(int unit)
 {
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case SLTC:
-            return QString("SLTC");
-        case mSLTC:
-            return QString("mSLTC");
-        case uSLTC:
-            return QString::fromUtf8("μSLTC");
+        case TNX:
+            return QString("TNX");
+        case mTNX:
+            return QString("mTNX");
+        case uTNX:
+            return QString::fromUtf8("μTNX");
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
-        case SLTC:
-            return QString("tSLTC");
-        case mSLTC:
-            return QString("mtSLTC");
-        case uSLTC:
-            return QString::fromUtf8("μtSLTC");
+        case TNX:
+            return QString("tTNX");
+        case mTNX:
+            return QString("mtTNX");
+        case uTNX:
+            return QString::fromUtf8("μtTNX");
         default:
             return QString("???");
         }
@@ -82,23 +82,23 @@ QString BitcoinUnits::description(int unit)
 {
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case SLTC:
-            return QString("SLTC");
-        case mSLTC:
-            return QString("Milli-SLTC (1 / 1" THIN_SP_UTF8 "000)");
-        case uSLTC:
-            return QString("Micro-SLTC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+        case TNX:
+            return QString("TNX");
+        case mTNX:
+            return QString("Milli-TNX (1 / 1" THIN_SP_UTF8 "000)");
+        case uTNX:
+            return QString("Micro-TNX (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
-        case SLTC:
-            return QString("TestSLTCs");
-        case mSLTC:
-            return QString("Milli-TestSLTC (1 / 1" THIN_SP_UTF8 "000)");
-        case uSLTC:
-            return QString("Micro-TestSLTC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+        case TNX:
+            return QString("TestTNXs");
+        case mTNX:
+            return QString("Milli-TestTNX (1 / 1" THIN_SP_UTF8 "000)");
+        case uTNX:
+            return QString("Micro-TestTNX (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }
@@ -108,11 +108,11 @@ QString BitcoinUnits::description(int unit)
 qint64 BitcoinUnits::factor(int unit)
 {
     switch (unit) {
-    case SLTC:
+    case TNX:
         return 100000000;
-    case mSLTC:
+    case mTNX:
         return 100000;
-    case uSLTC:
+    case uTNX:
         return 100;
     default:
         return 100000000;
@@ -122,11 +122,11 @@ qint64 BitcoinUnits::factor(int unit)
 int BitcoinUnits::decimals(int unit)
 {
     switch (unit) {
-    case SLTC:
+    case TNX:
         return 8;
-    case mSLTC:
+    case mTNX:
         return 5;
-    case uSLTC:
+    case uTNX:
         return 2;
     default:
         return 0;

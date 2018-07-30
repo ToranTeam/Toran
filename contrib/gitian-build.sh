@@ -17,7 +17,7 @@ osx=true
 SIGNER=
 VERSION=
 commit=false
-url=https://github.com/SLTCproject/SLTC
+url=https://github.com/TNXproject/TNX
 proc=2
 mem=2000
 lxc=true
@@ -31,7 +31,7 @@ commitFiles=true
 read -r -d '' usage <<- EOF
 Usage: $scriptName [-c|u|v|b|s|B|o|h|j|m|] signer version
 
-Run this script from the directory containing the SLTC, gitian-builder, gitian.sigs, and SLTC-detached-sigs.
+Run this script from the directory containing the TNX, gitian-builder, gitian.sigs, and TNX-detached-sigs.
 
 Arguments:
 signer          GPG signer to sign each build assert file
@@ -39,7 +39,7 @@ version		Version number, commit, or branch to build. If building a commit or bra
 
 Options:
 -c|--commit	Indicate that the version argument is for a commit or branch
--u|--url	Specify the URL of the repository. Default is https://github.com/SLTCproject/SLTC
+-u|--url	Specify the URL of the repository. Default is https://github.com/TNXproject/TNX
 -v|--verify 	Verify the gitian build
 -b|--build	Do a gitian build
 -s|--sign	Make signed binaries for Windows and Mac OSX
@@ -237,8 +237,8 @@ echo "${COMMIT}"
 if [[ $setup = true ]]
 then
     sudo apt-get install ruby apache2 git apt-cacher-ng python-vm-builder qemu-kvm qemu-utils
-    git clone https://github.com/SLTCproject/gitian.sigs.git
-    git clone https://github.com/SLTCproject/SLTC-detached-sigs.git
+    git clone https://github.com/TNXproject/gitian.sigs.git
+    git clone https://github.com/TNXproject/TNX-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
     pushd ./gitian-builder || exit
     if [[ -n "$USE_LXC" ]]
@@ -252,7 +252,7 @@ then
 fi
 
 # Set up build
-pushd ./SLTC || exit
+pushd ./TNX || exit
 git fetch
 git checkout "${COMMIT}"
 popd || exit
@@ -261,7 +261,7 @@ popd || exit
 if [[ $build = true ]]
 then
 	# Make output folder
-	mkdir -p "./SLTC-binaries/${VERSION}"
+	mkdir -p "./TNX-binaries/${VERSION}"
 
 	# Build Dependencies
 	echo ""
@@ -271,7 +271,7 @@ then
 	mkdir -p inputs
 	wget -N -P inputs $osslPatchUrl
 	wget -N -P inputs $osslTarUrl
-	make -C ../SLTC/depends download SOURCES_PATH="$(pwd)/cache/common"
+	make -C ../TNX/depends download SOURCES_PATH="$(pwd)/cache/common"
 
 	# Linux
 	if [[ $linux = true ]]
@@ -279,9 +279,9 @@ then
             echo ""
 	    echo "Compiling ${VERSION} Linux"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit SLTC=${COMMIT} --url SLTC=${url} ../SLTC/contrib/gitian-descriptors/gitian-linux.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-linux.yml
-	    mv build/out/SLTC-*.tar.gz build/out/src/SLTC-*.tar.gz ../SLTC-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit TNX=${COMMIT} --url TNX=${url} ../TNX/contrib/gitian-descriptors/gitian-linux.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-linux.yml
+	    mv build/out/TNX-*.tar.gz build/out/src/TNX-*.tar.gz ../TNX-binaries/${VERSION}
 	fi
 	# Windows
 	if [[ $windows = true ]]
@@ -289,10 +289,10 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} Windows"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit SLTC=${COMMIT} --url SLTC=${url} ../SLTC/contrib/gitian-descriptors/gitian-win.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-win.yml
-	    mv build/out/SLTC-*-win-unsigned.tar.gz inputs/SLTC-win-unsigned.tar.gz
-	    mv build/out/SLTC-*.zip build/out/SLTC-*.exe ../SLTC-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit TNX=${COMMIT} --url TNX=${url} ../TNX/contrib/gitian-descriptors/gitian-win.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-win.yml
+	    mv build/out/TNX-*-win-unsigned.tar.gz inputs/TNX-win-unsigned.tar.gz
+	    mv build/out/TNX-*.zip build/out/TNX-*.exe ../TNX-binaries/${VERSION}
 	fi
 	# Mac OSX
 	if [[ $osx = true ]]
@@ -300,10 +300,10 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} Mac OSX"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit SLTC=${COMMIT} --url SLTC=${url} ../SLTC/contrib/gitian-descriptors/gitian-osx.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-osx.yml
-	    mv build/out/SLTC-*-osx-unsigned.tar.gz inputs/SLTC-osx-unsigned.tar.gz
-	    mv build/out/SLTC-*.tar.gz build/out/SLTC-*.dmg ../SLTC-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit TNX=${COMMIT} --url TNX=${url} ../TNX/contrib/gitian-descriptors/gitian-osx.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-osx.yml
+	    mv build/out/TNX-*-osx-unsigned.tar.gz inputs/TNX-osx-unsigned.tar.gz
+	    mv build/out/TNX-*.tar.gz build/out/TNX-*.dmg ../TNX-binaries/${VERSION}
 	fi
 	# AArch64
 	if [[ $aarch64 = true ]]
@@ -311,9 +311,9 @@ then
 	    echo ""
 	    echo "Compiling ${VERSION} AArch64"
 	    echo ""
-	    ./bin/gbuild -j ${proc} -m ${mem} --commit SLTC=${COMMIT} --url SLTC=${url} ../SLTC/contrib/gitian-descriptors/gitian-aarch64.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-aarch64.yml
-	    mv build/out/SLTC-*.tar.gz build/out/src/SLTC-*.tar.gz ../SLTC-binaries/${VERSION}
+	    ./bin/gbuild -j ${proc} -m ${mem} --commit TNX=${COMMIT} --url TNX=${url} ../TNX/contrib/gitian-descriptors/gitian-aarch64.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-aarch64 --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-aarch64.yml
+	    mv build/out/TNX-*.tar.gz build/out/src/TNX-*.tar.gz ../TNX-binaries/${VERSION}
 	fi
 	popd || exit
 
@@ -341,32 +341,32 @@ then
 	echo ""
 	echo "Verifying v${VERSION} Linux"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../SLTC/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../TNX/contrib/gitian-descriptors/gitian-linux.yml
 	# Windows
 	echo ""
 	echo "Verifying v${VERSION} Windows"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../SLTC/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../TNX/contrib/gitian-descriptors/gitian-win.yml
 	# Mac OSX
 	echo ""
 	echo "Verifying v${VERSION} Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../SLTC/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../TNX/contrib/gitian-descriptors/gitian-osx.yml
 	# AArch64
 	echo ""
 	echo "Verifying v${VERSION} AArch64"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../SLTC/contrib/gitian-descriptors/gitian-aarch64.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-aarch64 ../TNX/contrib/gitian-descriptors/gitian-aarch64.yml
 	# Signed Windows
 	echo ""
 	echo "Verifying v${VERSION} Signed Windows"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../SLTC/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../TNX/contrib/gitian-descriptors/gitian-osx-signer.yml
 	# Signed Mac OSX
 	echo ""
 	echo "Verifying v${VERSION} Signed Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../SLTC/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../TNX/contrib/gitian-descriptors/gitian-osx-signer.yml
 	popd || exit
 fi
 
@@ -381,10 +381,10 @@ then
 	    echo ""
 	    echo "Signing ${VERSION} Windows"
 	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../SLTC/contrib/gitian-descriptors/gitian-win-signer.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-win-signer.yml
-	    mv build/out/SLTC-*win64-setup.exe ../SLTC-binaries/${VERSION}
-	    mv build/out/SLTC-*win32-setup.exe ../SLTC-binaries/${VERSION}
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../TNX/contrib/gitian-descriptors/gitian-win-signer.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-win-signer.yml
+	    mv build/out/TNX-*win64-setup.exe ../TNX-binaries/${VERSION}
+	    mv build/out/TNX-*win32-setup.exe ../TNX-binaries/${VERSION}
 	fi
 	# Sign Mac OSX
 	if [[ $osx = true ]]
@@ -392,9 +392,9 @@ then
 	    echo ""
 	    echo "Signing ${VERSION} Mac OSX"
 	    echo ""
-	    ./bin/gbuild -i --commit signature=${COMMIT} ../SLTC/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../SLTC/contrib/gitian-descriptors/gitian-osx-signer.yml
-	    mv build/out/SLTC-osx-signed.dmg ../SLTC-binaries/${VERSION}/SLTC-${VERSION}-osx.dmg
+	    ./bin/gbuild -i --commit signature=${COMMIT} ../TNX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../TNX/contrib/gitian-descriptors/gitian-osx-signer.yml
+	    mv build/out/TNX-osx-signed.dmg ../TNX-binaries/${VERSION}/TNX-${VERSION}-osx.dmg
 	fi
 	popd || exit
 

@@ -15,7 +15,7 @@
 #include <openssl/evp.h>
 #include "wallet.h"
 
-bool CCrypter::SetKeyFromPassSLTCase(const SecureString& strKeyData, const std::vector<unsigned char>& chSalt, const unsigned int nRounds, const unsigned int nDerivationMethod)
+bool CCrypter::SetKeyFromPassTNXase(const SecureString& strKeyData, const std::vector<unsigned char>& chSalt, const unsigned int nRounds, const unsigned int nDerivationMethod)
 {
     if (nRounds < 1 || chSalt.size() != WALLET_CRYPTO_SALT_SIZE)
         return false;
@@ -262,16 +262,16 @@ bool CCryptoKeyStore::Unlock(const CKeyingMaterial& vMasterKeyIn)
 
             uint256 nSeed;
             if (!GetDeterministicSeed(hashSeed, nSeed)) {
-                return error("Failed to read zSLTC seed from DB. Wallet is probably corrupt.");
+                return error("Failed to read zTNX seed from DB. Wallet is probably corrupt.");
             }
             pwalletMain->zwalletMain->SetMasterSeed(nSeed, false);
         } else {
-            // First time this wallet has been unlocked with dzSLTC
+            // First time this wallet has been unlocked with dzTNX
             // Borrow random generator from the key class so that we don't have to worry about randomness
             CKey key;
             key.MakeNewKey(true);
             uint256 seed = key.GetPrivKey_256();
-            LogPrintf("%s: first run of zSLTC wallet detected, new seed generated. Seedhash=%s\n", __func__, Hash(seed.begin(), seed.end()).GetHex());
+            LogPrintf("%s: first run of zTNX wallet detected, new seed generated. Seedhash=%s\n", __func__, Hash(seed.begin(), seed.end()).GetHex());
             pwalletMain->zwalletMain->SetMasterSeed(seed, true);
             pwalletMain->zwalletMain->GenerateMintPool();
         }
@@ -392,7 +392,7 @@ bool CCryptoKeyStore::AddDeterministicSeed(const uint256& seed)
             //attempt encrypt
             if (EncryptSecret(vMasterKey, kmSeed, hashSeed, vchSeedSecret)) {
                 //write to wallet with hashSeed as unique key
-                if (db.WriteZSLTCSeed(hashSeed, vchSeedSecret)) {
+                if (db.WriteZTNXSeed(hashSeed, vchSeedSecret)) {
                     return true;
                 }
             }
@@ -400,12 +400,12 @@ bool CCryptoKeyStore::AddDeterministicSeed(const uint256& seed)
         }
         strErr = "save since wallet is locked";
     } else { //wallet not encrypted
-        if (db.WriteZSLTCSeed(hashSeed, ToByteVector(seed))) {
+        if (db.WriteZTNXSeed(hashSeed, ToByteVector(seed))) {
             return true;
         }
-        strErr = "save zSLTCseed to wallet";
+        strErr = "save zTNXseed to wallet";
     }
-                //the use case for this is no password set seed, mint dzSLTC,
+                //the use case for this is no password set seed, mint dzTNX,
 
     return error("s%: Failed to %s\n", __func__, strErr);
 }
@@ -420,7 +420,7 @@ bool CCryptoKeyStore::GetDeterministicSeed(const uint256& hashSeed, uint256& see
 
             vector<unsigned char> vchCryptedSeed;
             //read encrypted seed
-            if (db.ReadZSLTCSeed(hashSeed, vchCryptedSeed)) {
+            if (db.ReadZTNXSeed(hashSeed, vchCryptedSeed)) {
                 uint256 seedRetrieved = uint256(ReverseEndianString(HexStr(vchCryptedSeed)));
                 //this checks if the hash of the seed we just read matches the hash given, meaning it is not encrypted
                 //the use case for this is when not crypted, seed is set, then password set, the seed not yet crypted in memory
@@ -441,7 +441,7 @@ bool CCryptoKeyStore::GetDeterministicSeed(const uint256& hashSeed, uint256& see
     } else {
         vector<unsigned char> vchSeed;
         // wallet not crypted
-        if (db.ReadZSLTCSeed(hashSeed, vchSeed)) {
+        if (db.ReadZTNXSeed(hashSeed, vchSeed)) {
             seedOut = uint256(ReverseEndianString(HexStr(vchSeed)));
             return true;
         }

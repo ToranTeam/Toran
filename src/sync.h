@@ -190,7 +190,7 @@ typedef CMutexLock<CCriticalSection> CCriticalBlock;
         LeaveCritical();           \
     }
 
-class CSemaSLTC
+class CSemaTNX
 {
 private:
     boost::condition_variable condition;
@@ -198,7 +198,7 @@ private:
     int value;
 
 public:
-    CSemaSLTC(int init) : value(init) {}
+    CSemaTNX(int init) : value(init) {}
 
     void wait()
     {
@@ -228,11 +228,11 @@ public:
     }
 };
 
-/** RAII-style semaSLTC lock */
-class CSemaSLTCGrant
+/** RAII-style semaTNX lock */
+class CSemaTNXGrant
 {
 private:
-    CSemaSLTC* sem;
+    CSemaTNX* sem;
     bool fHaveGrant;
 
 public:
@@ -259,7 +259,7 @@ public:
         return fHaveGrant;
     }
 
-    void MoveTo(CSemaSLTCGrant& grant)
+    void MoveTo(CSemaTNXGrant& grant)
     {
         grant.Release();
         grant.sem = sem;
@@ -268,9 +268,9 @@ public:
         fHaveGrant = false;
     }
 
-    CSemaSLTCGrant() : sem(NULL), fHaveGrant(false) {}
+    CSemaTNXGrant() : sem(NULL), fHaveGrant(false) {}
 
-    CSemaSLTCGrant(CSemaSLTC& sema, bool fTry = false) : sem(&sema), fHaveGrant(false)
+    CSemaTNXGrant(CSemaTNX& sema, bool fTry = false) : sem(&sema), fHaveGrant(false)
     {
         if (fTry)
             TryAcquire();
@@ -278,7 +278,7 @@ public:
             Acquire();
     }
 
-    ~CSemaSLTCGrant()
+    ~CSemaTNXGrant()
     {
         Release();
     }

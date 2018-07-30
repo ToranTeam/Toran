@@ -33,10 +33,10 @@ Bip38ToolDialog::Bip38ToolDialog(QWidget* parent) : QDialog(parent),
 
     GUIUtil::setupAddressWidget(ui->addressIn_ENC, this);
     ui->addressIn_ENC->installEventFilter(this);
-    ui->passSLTCaseIn_ENC->installEventFilter(this);
+    ui->passTNXaseIn_ENC->installEventFilter(this);
     ui->encryptedKeyOut_ENC->installEventFilter(this);
     ui->encryptedKeyIn_DEC->installEventFilter(this);
-    ui->passSLTCaseIn_DEC->installEventFilter(this);
+    ui->passTNXaseIn_DEC->installEventFilter(this);
     ui->decryptedKeyOut_DEC->installEventFilter(this);
 }
 
@@ -53,13 +53,13 @@ void Bip38ToolDialog::setModel(WalletModel* model)
 void Bip38ToolDialog::setAddress_ENC(const QString& address)
 {
     ui->addressIn_ENC->setText(address);
-    ui->passSLTCaseIn_ENC->setFocus();
+    ui->passTNXaseIn_ENC->setFocus();
 }
 
 void Bip38ToolDialog::setAddress_DEC(const QString& address)
 {
     ui->encryptedKeyIn_DEC->setText(address);
-    ui->passSLTCaseIn_DEC->setFocus();
+    ui->passTNXaseIn_DEC->setFocus();
 }
 
 void Bip38ToolDialog::showTab_ENC(bool fShow)
@@ -94,14 +94,14 @@ void Bip38ToolDialog::on_pasteButton_ENC_clicked()
 
 QString specialChar = "\"@!#$%&'()*+,-./:;<=>?`{|}~^_[]\\";
 QString validChar = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + specialChar;
-bool isValidPassSLTCase(QString strPassSLTCase, QString& strInvalid)
+bool isValidPassTNXase(QString strPassTNXase, QString& strInvalid)
 {
-    for (int i = 0; i < strPassSLTCase.size(); i++) {
-        if (!validChar.contains(strPassSLTCase[i], Qt::CaseSensitive)) {
-            if (QString("\"'").contains(strPassSLTCase[i]))
+    for (int i = 0; i < strPassTNXase.size(); i++) {
+        if (!validChar.contains(strPassTNXase[i], Qt::CaseSensitive)) {
+            if (QString("\"'").contains(strPassTNXase[i]))
                 continue;
 
-            strInvalid = strPassSLTCase[i];
+            strInvalid = strPassTNXase[i];
             return false;
         }
     }
@@ -114,11 +114,11 @@ void Bip38ToolDialog::on_encryptKeyButton_ENC_clicked()
     if (!model)
         return;
 
-    QString qstrPassSLTCase = ui->passSLTCaseIn_ENC->text();
+    QString qstrPassTNXase = ui->passTNXaseIn_ENC->text();
     QString strInvalid;
-    if (!isValidPassSLTCase(qstrPassSLTCase, strInvalid)) {
+    if (!isValidPassTNXase(qstrPassTNXase, strInvalid)) {
         ui->statusLabel_ENC->setStyleSheet("QLabel { color: red; }");
-        ui->statusLabel_ENC->setText(tr("The entered passSLTCase is invalid. ") + strInvalid + QString(" is not valid") + QString(" ") + tr("Allowed: 0-9,a-z,A-Z,") + specialChar);
+        ui->statusLabel_ENC->setText(tr("The entered passTNXase is invalid. ") + strInvalid + QString(" is not valid") + QString(" ") + tr("Allowed: 0-9,a-z,A-Z,") + specialChar);
         return;
     }
 
@@ -152,7 +152,7 @@ void Bip38ToolDialog::on_encryptKeyButton_ENC_clicked()
         return;
     }
 
-    std::string encryptedKey = BIP38_Encrypt(EncodeDestination(addr), qstrPassSLTCase.toStdString(), key.GetPrivKey_256(), key.IsCompressed());
+    std::string encryptedKey = BIP38_Encrypt(EncodeDestination(addr), qstrPassTNXase.toStdString(), key.GetPrivKey_256(), key.IsCompressed());
     ui->encryptedKeyOut_ENC->setText(QString::fromStdString(encryptedKey));
 }
 
@@ -164,7 +164,7 @@ void Bip38ToolDialog::on_copyKeyButton_ENC_clicked()
 void Bip38ToolDialog::on_clearButton_ENC_clicked()
 {
     ui->addressIn_ENC->clear();
-    ui->passSLTCaseIn_ENC->clear();
+    ui->passTNXaseIn_ENC->clear();
     ui->encryptedKeyOut_ENC->clear();
     ui->statusLabel_ENC->clear();
 
@@ -180,14 +180,14 @@ void Bip38ToolDialog::on_pasteButton_DEC_clicked()
 
 void Bip38ToolDialog::on_decryptKeyButton_DEC_clicked()
 {
-    string strPassSLTCase = ui->passSLTCaseIn_DEC->text().toStdString();
+    string strPassTNXase = ui->passTNXaseIn_DEC->text().toStdString();
     string strKey = ui->encryptedKeyIn_DEC->text().toStdString();
 
     uint256 privKey;
     bool fCompressed;
-    if (!BIP38_Decrypt(strPassSLTCase, strKey, privKey, fCompressed)) {
+    if (!BIP38_Decrypt(strPassTNXase, strKey, privKey, fCompressed)) {
         ui->statusLabel_DEC->setStyleSheet("QLabel { color: red; }");
-        ui->statusLabel_DEC->setText(tr("Failed to decrypt.") + QString(" ") + tr("Please check the key and passSLTCase and try again."));
+        ui->statusLabel_DEC->setText(tr("Failed to decrypt.") + QString(" ") + tr("Please check the key and passTNXase and try again."));
         return;
     }
 
@@ -255,7 +255,7 @@ void Bip38ToolDialog::on_clearButton_DEC_clicked()
 {
     ui->encryptedKeyIn_DEC->clear();
     ui->decryptedKeyOut_DEC->clear();
-    ui->passSLTCaseIn_DEC->clear();
+    ui->passTNXaseIn_DEC->clear();
     ui->statusLabel_DEC->clear();
 
     ui->encryptedKeyIn_DEC->setFocus();
