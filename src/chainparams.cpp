@@ -59,7 +59,7 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
     1532912060, // * UNIX timestamp of last checkpoint block
-    829939,     // * total number of transactions between genesis and last checkpoint
+    0,     // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     1500        // * estimated number of transactions per day after checkpoint
 };
@@ -79,36 +79,6 @@ static const Checkpoints::CCheckpointData dataRegtest = {
     1532912060,
     0,
     100};
-
-/*void MineGenesis(CBlock genesis)
-{
-    printf("Searching for genesis block...\n");
-    // This will figure out a valid hash and Nonce if you're
-    // creating a different genesis block:
-    uint256 hashTarget = ~uint256(0) >> 20;
-    uint256 thash;
-    while(true)
-    {
-        thash = genesis.GetHash();
-        if (thash <= hashTarget)
-            break;
-        if ((genesis.nNonce & 0xFFF) == 0)
-        {
-            printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
-        }
-        ++genesis.nNonce;
-        if (genesis.nNonce == 0)
-        {
-            printf("NONCE WRAPPED, incrementing time\n");
-            ++genesis.nTime;
-        }
-    }
-    printf("block.nTime = %u \n", genesis.nTime);
-    printf("block.nNonce = %u \n", genesis.nNonce);
-    printf("block.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-    printf("block.merkle = %s\n", genesis.hashMerkleRoot.ToString().c_str());
-    std::cout << genesis.ToString() << std::endl;
-}*/
 
 
 libzerocoin::ZerocoinParams* CChainParams::Zerocoin_Params() const
@@ -191,7 +161,7 @@ public:
         genesis.nBits = 0x207fffff;;
         genesis.nNonce = 881136;
 
-	//MineGenesis(genesis);
+	
 
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256("0x00000302ba5a70a6e6f6e042f9e5f496d8b4b95150e33f9e6bddc8b7dfe34170"));
