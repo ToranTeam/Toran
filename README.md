@@ -11,7 +11,7 @@ TNX Coin Features
 ### Coin Specs
 <table>
 <tr><td>Algo</td><td>Quark</td></tr>
-<tr><td>Block Time</td><td>150 Seconds</td></tr>
+<tr><td>Block Time</td><td>60 Seconds</td></tr>
 <tr><td>Difficulty Retargeting</td><td>Every Block</td></tr>
 <tr><td>Max Coin Supply</td><td>21,722,591 TNX</td></tr>
 
@@ -25,9 +25,7 @@ TNX Coin Features
 
 <table>
 <th>Phase</th><th>Block Height</th><th>Reward</th><th>Stakers</th><th>Masternodes</th>
-<tr><td>Phase 1</td><td>2 - 100 </td><td>1 TNX</td><td>100% (0 TNX)</td><td> 0% (0 TNX)</td></tr>
-<tr><td>Phase 2</td><td>101 - 400</td><td>1 TNX</td><td>100% (1 TNX)</td><td>0% (0 TNX)</td></tr>
-<tr><td>Phase 3</td><td>401 - 1499 </td><td>1 TNX</td><td>100% (1 TNX)</td><td>0% (0 TNX)</td></tr>
+<tr><td>Phase 1</td><td>200 - 1499 </td><td>1 TNX</td><td>100% (0 TNX)</td><td> 0% (0 TNX)</td></tr>
 <tr><td>Phase 4</td><td>1500 - 210,000</td><td>18 TNX</td><td>35% (6.3 TNX)</td><td>65% (11.7 TNX)</td></tr>
 <tr><td>Phase 5</td><td>210,001 - 420,000</td><td>24 TNX</td><td>35% (8.4 TNX)</td><td>65% (15.6 TNX)</td></tr>
 <tr><td>Phase 6</td><td>420,001 - 630,000</td><td>21 TNX</td><td>35% (7.35 TNX)</td><td>65% (13.65 TNX)</td></tr>
@@ -38,4 +36,4 @@ TNX Coin Features
 
 ### MN Payments
 
-- Masternode payments start from block 500.
+65% Rewards to MN 35% to miners/stakers
