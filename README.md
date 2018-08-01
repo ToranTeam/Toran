@@ -2,11 +2,11 @@ TNX Core integration/staging repository
 =======================================
 
 TNX Coin Features
-- Anonymized transactions using our "Stealth Mode"
+- Anonymized transactions using our zercoin technology
 - Time Based Masternode Rewards - people who hold MNs for a longer time will be rewarded more often than others.
 - Fast transactions - Swift TX.
 - Masternode technology used to secure the network and provide the above features, each Masternode is secured
-  with collateral of 6K TNX
+  with collateral of 10K TNX
 
 ### Coin Specs
 <table>
